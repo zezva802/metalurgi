@@ -1,0 +1,22 @@
+[
+  {
+    "domain": "bookify.example",
+    "known": true,
+    "age_days": 3650
+  },
+  {
+    "domain": "staywell.example",
+    "known": true,
+    "age_days": 2920
+  },
+  {
+    "domain": "roomly.example",
+    "known": true,
+    "age_days": 1825
+  },
+  {
+    "domain": "paris-hotels-deal.shop",
+    "known": false,
+    "age_days": 4
+  }
+]

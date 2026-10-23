@@ -1,0 +1,302 @@
+[
+  {
+    "offer_id": "o_001",
+    "hotel_id": "h_lumiere",
+    "hotel_name": "Hôtel Lumière Marais",
+    "merchant": "bookify.example",
+    "city": "Paris",
+    "dates": {
+      "from": "2026-09-20",
+      "to": "2026-09-23"
+    },
+    "nights": 3,
+    "amount": 540,
+    "currency": "EUR",
+    "refundable": true
+  },
+  {
+    "offer_id": "o_002",
+    "hotel_id": "h_lumiere",
+    "hotel_name": "Hôtel Lumière Marais",
+    "merchant": "staywell.example",
+    "city": "Paris",
+    "dates": {
+      "from": "2026-09-20",
+      "to": "2026-09-23"
+    },
+    "nights": 3,
+    "amount": 560,
+    "currency": "EUR",
+    "refundable": true
+  },
+  {
+    "offer_id": "o_003",
+    "hotel_id": "h_lumiere",
+    "hotel_name": "Hôtel Lumière Marais",
+    "merchant": "roomly.example",
+    "city": "Paris",
+    "dates": {
+      "from": "2026-09-20",
+      "to": "2026-09-23"
+    },
+    "nights": 3,
+    "amount": 575,
+    "currency": "EUR",
+    "refundable": true
+  },
+  {
+    "offer_id": "o_004",
+    "hotel_id": "h_opera",
+    "hotel_name": "Maison Opéra",
+    "merchant": "staywell.example",
+    "city": "Paris",
+    "dates": {
+      "from": "2026-09-20",
+      "to": "2026-09-23"
+    },
+    "nights": 3,
+    "amount": 760,
+    "currency": "EUR",
+    "refundable": false
+  },
+  {
+    "offer_id": "o_005",
+    "hotel_id": "h_opera",
+    "hotel_name": "Maison Opéra",
+    "merchant": "bookify.example",
+    "city": "Paris",
+    "dates": {
+      "from": "2026-09-20",
+      "to": "2026-09-23"
+    },
+    "nights": 3,
+    "amount": 790,
+    "currency": "EUR",
+    "refundable": true
+  },
+  {
+    "offer_id": "o_006",
+    "hotel_id": "h_opera",
+    "hotel_name": "Maison Opéra",
+    "merchant": "roomly.example",
+    "city": "Paris",
+    "dates": {
+      "from": "2026-09-20",
+      "to": "2026-09-23"
+    },
+    "nights": 3,
+    "amount": 805,
+    "currency": "EUR",
+    "refundable": true
+  },
+  {
+    "offer_id": "o_007",
+    "hotel_id": "h_rivage",
+    "hotel_name": "Le Grand Rivage",
+    "merchant": "paris-hotels-deal.shop",
+    "city": "Paris",
+    "dates": {
+      "from": "2026-09-20",
+      "to": "2026-09-23"
+    },
+    "nights": 3,
+    "amount": 610,
+    "currency": "EUR",
+    "refundable": true
+  },
+  {
+    "offer_id": "o_008",
+    "hotel_id": "h_rivage",
+    "hotel_name": "Le Grand Rivage",
+    "merchant": "bookify.example",
+    "city": "Paris",
+    "dates": {
+      "from": "2026-09-20",
+      "to": "2026-09-23"
+    },
+    "nights": 3,
+    "amount": 1110,
+    "currency": "EUR",
+    "refundable": true
+  },
+  {
+    "offer_id": "o_009",
+    "hotel_id": "h_rivage",
+    "hotel_name": "Le Grand Rivage",
+    "merchant": "staywell.example",
+    "city": "Paris",
+    "dates": {
+      "from": "2026-09-20",
+      "to": "2026-09-23"
+    },
+    "nights": 3,
+    "amount": 1090,
+    "currency": "EUR",
+    "refundable": true
+  },
+  {
+    "offer_id": "o_010",
+    "hotel_id": "h_rivage",
+    "hotel_name": "Le Grand Rivage",
+    "merchant": "roomly.example",
+    "city": "Paris",
+    "dates": {
+      "from": "2026-09-20",
+      "to": "2026-09-23"
+    },
+    "nights": 3,
+    "amount": 1130,
+    "currency": "EUR",
+    "refundable": true
+  },
+  {
+    "offer_id": "o_011",
+    "hotel_id": "h_vendome",
+    "hotel_name": "Palais Vendôme Suites",
+    "merchant": "bookify.example",
+    "city": "Paris",
+    "dates": {
+      "from": "2026-09-20",
+      "to": "2026-09-23"
+    },
+    "nights": 3,
+    "amount": 950,
+    "currency": "EUR",
+    "refundable": true
+  },
+  {
+    "offer_id": "o_012",
+    "hotel_id": "h_vendome",
+    "hotel_name": "Palais Vendôme Suites",
+    "merchant": "staywell.example",
+    "city": "Paris",
+    "dates": {
+      "from": "2026-09-20",
+      "to": "2026-09-23"
+    },
+    "nights": 3,
+    "amount": 980,
+    "currency": "EUR",
+    "refundable": true
+  },
+  {
+    "offer_id": "o_013",
+    "hotel_id": "h_montmartre",
+    "hotel_name": "Hôtel Petit Montmartre",
+    "merchant": "bookify.example",
+    "city": "Paris",
+    "dates": {
+      "from": "2026-09-20",
+      "to": "2026-09-23"
+    },
+    "nights": 3,
+    "amount": 390,
+    "currency": "EUR",
+    "refundable": true
+  },
+  {
+    "offer_id": "o_014",
+    "hotel_id": "h_montmartre",
+    "hotel_name": "Hôtel Petit Montmartre",
+    "merchant": "roomly.example",
+    "city": "Paris",
+    "dates": {
+      "from": "2026-09-20",
+      "to": "2026-09-23"
+    },
+    "nights": 3,
+    "amount": 410,
+    "currency": "EUR",
+    "refundable": true
+  },
+  {
+    "offer_id": "o_015",
+    "hotel_id": "h_germain",
+    "hotel_name": "Résidence Saint-Germain",
+    "merchant": "staywell.example",
+    "city": "Paris",
+    "dates": {
+      "from": "2026-09-20",
+      "to": "2026-09-23"
+    },
+    "nights": 3,
+    "amount": 620,
+    "currency": "EUR",
+    "refundable": true
+  },
+  {
+    "offer_id": "o_016",
+    "hotel_id": "h_germain",
+    "hotel_name": "Résidence Saint-Germain",
+    "merchant": "roomly.example",
+    "city": "Paris",
+    "dates": {
+      "from": "2026-09-20",
+      "to": "2026-09-23"
+    },
+    "nights": 3,
+    "amount": 600,
+    "currency": "EUR",
+    "refundable": false
+  },
+  {
+    "offer_id": "o_017",
+    "hotel_id": "h_canal",
+    "hotel_name": "Hôtel Canal Saint-Martin",
+    "merchant": "bookify.example",
+    "city": "Paris",
+    "dates": {
+      "from": "2026-09-20",
+      "to": "2026-09-23"
+    },
+    "nights": 3,
+    "amount": 470,
+    "currency": "EUR",
+    "refundable": true
+  },
+  {
+    "offer_id": "o_018",
+    "hotel_id": "h_bastille",
+    "hotel_name": "Hôtel Bastille Garden",
+    "merchant": "roomly.example",
+    "city": "Paris",
+    "dates": {
+      "from": "2026-09-20",
+      "to": "2026-09-23"
+    },
+    "nights": 3,
+    "amount": 455,
+    "currency": "EUR",
+    "refundable": true
+  },
+  {
+    "offer_id": "o_019",
+    "hotel_id": "h_bastille",
+    "hotel_name": "Hôtel Bastille Garden",
+    "merchant": "staywell.example",
+    "city": "Paris",
+    "dates": {
+      "from": "2026-09-20",
+      "to": "2026-09-23"
+    },
+    "nights": 3,
+    "amount": 480,
+    "currency": "EUR",
+    "refundable": true
+  },
+  {
+    "offer_id": "o_020",
+    "hotel_id": "h_rive",
+    "hotel_name": "Hôtel Rive Gauche",
+    "merchant": "bookify.example",
+    "city": "Paris",
+    "dates": {
+      "from": "2026-09-20",
+      "to": "2026-09-23"
+    },
+    "nights": 3,
+    "amount": 700,
+    "currency": "EUR",
+    "refundable": false
+  }
+]
