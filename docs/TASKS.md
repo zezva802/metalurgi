@@ -18,7 +18,7 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
   Done when: €950 proposal → BLOCK, "Exceeds the €800 limit".
 - [x] **S1 · App layout** — header "Metalurgi · Bank gateway" + orange "Synthetic data" badge; nav: Console, Bank app, Agent, Audit, NBG; placeholder pages.
   Done when: all pages reachable.
-- [ ] **S2 · Bank-app mandate screen** — request textarea, JSON editor prefilled with the template, Sign → `POST /api/mandates` (signs with Nino's key, stores in `lib/store.ts`).
+- [x] **S2 · Bank-app mandate screen** — request textarea, JSON editor prefilled with the template, Sign → `POST /api/mandates` (signs with Nino's key, stores in `lib/store.ts`).
   Done when: Sign shows "Signed", short signature and mandate_id.
 - [ ] **S3 · Test payment form** (temporary) — merchant + amount → `POST /api/payments` → E3 + E4 → shows outcome and reasons.
   Done when: the Phase 1 checkpoint works in the browser.

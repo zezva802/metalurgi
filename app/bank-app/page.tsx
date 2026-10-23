@@ -1,5 +1,14 @@
-import { Placeholder } from "@/components/placeholder";
+import { MANDATE_TEMPLATE } from "@/lib/mandates";
+import { MandateForm } from "./mandate-form";
 
 export default function Page() {
-  return <Placeholder title="Bank app" who="For Nino: sign mandates and approve payments." task="S2" />;
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-4xl font-bold">Bank app</h1>
+        <p className="text-xl text-slate-600">Nino gives her travel agent a narrow, signed permission.</p>
+      </div>
+      <MandateForm template={MANDATE_TEMPLATE} />
+    </div>
+  );
 }
