@@ -54,10 +54,10 @@ export function generateTransactions(seed = SEED): Transaction[] {
     }
   }
 
-  // One hotel stay roughly every 40 days, always refundable, €90–160 per night.
+  // One hotel stay roughly every 40 days, always refundable, €90–200 per night.
   for (let i = 0; i < HOTEL_STAYS; i++) {
     const nights = int(1, 4);
-    const perNight = int(90, 160);
+    const perNight = int(90, 200);
     rows.push({
       date: day(i * 40 + int(0, 30)),
       hour: int(9, 21),
