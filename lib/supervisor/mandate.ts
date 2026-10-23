@@ -1,11 +1,12 @@
 import { generateKeyPairSync, sign, verify, type KeyObject } from "node:crypto";
 import { z } from "zod";
+import type { Proposal } from "./proposal";
 
 // A mandate is the narrow permission a customer signs for an agent.
 // Everything except `preferences` is a hard rule checked before any payment.
 // `preferences` are soft and only feed behavior scoring.
 
-const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "expected YYYY-MM-DD");
+export const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "expected YYYY-MM-DD");
 
 export const MandateSchema = z.object({
   mandate_id: z.string().min(1),
@@ -69,4 +70,100 @@ export function verifyCanonical(value: unknown, signature: string, publicKey: Pu
   } catch {
     return false;
   }
+}
+
+// ---- Hard mandate checks ----
+// Any failure here means BLOCK. Nothing downstream (behavior, context) can override it.
+
+export type MandateRule =
+  | "signature"
+  | "expiry"
+  | "mandate_id"
+  | "agent_id"
+  | "category"
+  | "city"
+  | "dates"
+  | "currency"
+  | "max_amount"
+  | "max_uses"
+  | "budget";
+
+export type MandateFailure = { rule: MandateRule; message: string };
+export type MandateCheck = { pass: boolean; failures: MandateFailure[] };
+
+export type MandateState = {
+  principalPublicKey: PublicKeyInput; // the customer's key the mandate must be signed with
+  uses: number; // executed payments under this mandate so far
+  spent: number; // total executed so far, in mandate currency
+  now: Date;
+};
+
+const SYMBOLS: Record<string, string> = { EUR: "€", USD: "$", GBP: "£", GEL: "₾" };
+
+export function formatMoney(amount: number, currency: string): string {
+  const symbol = SYMBOLS[currency];
+  const value = amount.toLocaleString("en-US", { maximumFractionDigits: 2 });
+  return symbol ? `${symbol}${value}` : `${value} ${currency}`;
+}
+
+export function checkMandate(
+  mandate: Mandate,
+  signature: string,
+  proposal: Proposal,
+  state: MandateState,
+): MandateCheck {
+  const failures: MandateFailure[] = [];
+  const fail = (rule: MandateRule, message: string) => failures.push({ rule, message });
+  const money = (amount: number) => formatMoney(amount, mandate.currency);
+
+  if (!verifyCanonical(mandate, signature, state.principalPublicKey)) {
+    fail("signature", "Mandate signature is invalid: it was changed after signing or not signed by the customer");
+  }
+
+  if (state.now.getTime() >= new Date(mandate.expires_at).getTime()) {
+    fail("expiry", `Mandate expired at ${mandate.expires_at}`);
+  }
+
+  if (proposal.mandate_id !== mandate.mandate_id) {
+    fail("mandate_id", `Proposal refers to mandate ${proposal.mandate_id}, not ${mandate.mandate_id}`);
+  }
+
+  if (proposal.agent_id !== mandate.agent_id) {
+    fail("agent_id", `Mandate is for agent ${mandate.agent_id}, not ${proposal.agent_id}`);
+  }
+
+  if (proposal.category !== mandate.category) {
+    fail("category", `Mandate covers ${mandate.category}, not ${proposal.category}`);
+  }
+
+  if (proposal.city !== mandate.city) {
+    fail("city", `Mandate covers ${mandate.city}, not ${proposal.city}`);
+  }
+
+  // YYYY-MM-DD strings compare correctly as text.
+  const { from, to } = proposal.dates;
+  if (from > to || from < mandate.dates.from || to > mandate.dates.to) {
+    fail("dates", `Dates ${from} to ${to} are outside the mandate (${mandate.dates.from} to ${mandate.dates.to})`);
+  }
+
+  if (proposal.currency !== mandate.currency) {
+    fail("currency", `Mandate is in ${mandate.currency}, proposal is in ${proposal.currency}`);
+  }
+
+  if (proposal.amount > mandate.max_amount) {
+    fail("max_amount", `Exceeds the ${money(mandate.max_amount)} limit (${money(proposal.amount)} requested)`);
+  }
+
+  if (state.uses >= mandate.max_uses) {
+    fail("max_uses", `Mandate already used ${state.uses} of ${mandate.max_uses} times`);
+  }
+
+  if (state.spent + proposal.amount > mandate.max_amount) {
+    fail(
+      "budget",
+      `Would bring the total to ${money(state.spent + proposal.amount)}, over the ${money(mandate.max_amount)} budget (${money(state.spent)} already spent)`,
+    );
+  }
+
+  return { pass: failures.length === 0, failures };
 }

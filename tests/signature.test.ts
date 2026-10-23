@@ -1,19 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { generateKeys, signCanonical, verifyCanonical, type Mandate } from "@/lib/supervisor/mandate";
+import { generateKeys, signCanonical, verifyCanonical } from "@/lib/supervisor/mandate";
+import { MANDATE } from "./fixtures";
 
-const mandate: Mandate = {
-  mandate_id: "m_001",
-  principal_id: "nino",
-  agent_id: "agent_travel_01",
-  category: "hotel",
-  city: "Paris",
-  dates: { from: "2026-09-20", to: "2026-09-23" },
-  max_amount: 800,
-  currency: "EUR",
-  max_uses: 1,
-  preferences: { refundable: true },
-  expires_at: "2026-10-25T18:00:00Z",
-};
+const mandate = MANDATE;
 
 const nino = generateKeys();
 const other = generateKeys();

@@ -12,7 +12,7 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
   Done when: test shows key order doesn't change the canonical string.
 - [x] **E2 · Ed25519 sign/verify** — Node `crypto` (`generateKeyPairSync('ed25519')`, `sign(null, …)`, `verify(null, …)`). `npm run keys` writes synthetic demo keys for Nino and `agent_travel_01` to `data/keys/`.
   Done when: sign→verify is true; changing `max_amount` after signing → false (scenario E).
-- [ ] **E3 · Hard mandate checks** — `checkMandate(mandate, signature, proposal, state)` → `{ pass, failures: [{ rule, message }] }`. Rules: signature, expiry, agent_id match, category, city, dates in range, amount ≤ max_amount, uses < max_uses, spent + amount ≤ max_amount.
+- [x] **E3 · Hard mandate checks** — `checkMandate(mandate, signature, proposal, state)` → `{ pass, failures: [{ rule, message }] }`. Rules: signature, expiry, agent_id match, category, city, dates in range, amount ≤ max_amount, uses < max_uses, spent + amount ≤ max_amount.
   Done when: one test per rule passes, incl. D (€950) and G (second split payment).
 - [ ] **E4 · Decision stub** — `lib/supervisor/decide.ts`: mandate fail → BLOCK with reasons, else EXECUTE. Returns `{ outcome, reasons[] }`.
   Done when: €950 proposal → BLOCK, "Exceeds the €800 limit".
