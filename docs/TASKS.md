@@ -16,7 +16,7 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
   Done when: one test per rule passes, incl. D (€950) and G (second split payment).
 - [x] **E4 · Decision stub** — `lib/supervisor/decide.ts`: mandate fail → BLOCK with reasons, else EXECUTE. Returns `{ outcome, reasons[] }`.
   Done when: €950 proposal → BLOCK, "Exceeds the €800 limit".
-- [ ] **S1 · App layout** — header "Metalurgi · Bank gateway" + orange "Synthetic data" badge; nav: Console, Bank app, Agent, Audit, NBG; placeholder pages.
+- [x] **S1 · App layout** — header "Metalurgi · Bank gateway" + orange "Synthetic data" badge; nav: Console, Bank app, Agent, Audit, NBG; placeholder pages.
   Done when: all pages reachable.
 - [ ] **S2 · Bank-app mandate screen** — request textarea, JSON editor prefilled with the template, Sign → `POST /api/mandates` (signs with Nino's key, stores in `lib/store.ts`).
   Done when: Sign shows "Signed", short signature and mandate_id.
