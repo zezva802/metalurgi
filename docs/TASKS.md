@@ -6,7 +6,7 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
 ## Phase 1 · Fri 17:00–24:00 · Foundations
 **Checkpoint:** sign a mandate in the browser, send a fake €950 payment, see it blocked with "Exceeds the €800 limit".
 
-- [ ] **S0 · Repo setup** — Next.js + TS + Tailwind + App Router, Vitest (`"test": "vitest run"`), zod, `.env.local` in .gitignore.
+- [x] **S0 · Repo setup** — Next.js + TS + Tailwind + App Router, Vitest (`"test": "vitest run"`), zod, `.env.local` in .gitignore.
   Done when: `npm run dev` serves a page and `npm test` runs.
 - [ ] **E1 · Mandate type + canonical JSON** — `lib/supervisor/mandate.ts`: `Mandate` type (see CLAUDE.md), `canonicalize()` sorts keys recursively.
   Done when: test shows key order doesn't change the canonical string.
