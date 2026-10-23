@@ -14,7 +14,7 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
   Done when: sign→verify is true; changing `max_amount` after signing → false (scenario E).
 - [x] **E3 · Hard mandate checks** — `checkMandate(mandate, signature, proposal, state)` → `{ pass, failures: [{ rule, message }] }`. Rules: signature, expiry, agent_id match, category, city, dates in range, amount ≤ max_amount, uses < max_uses, spent + amount ≤ max_amount.
   Done when: one test per rule passes, incl. D (€950) and G (second split payment).
-- [ ] **E4 · Decision stub** — `lib/supervisor/decide.ts`: mandate fail → BLOCK with reasons, else EXECUTE. Returns `{ outcome, reasons[] }`.
+- [x] **E4 · Decision stub** — `lib/supervisor/decide.ts`: mandate fail → BLOCK with reasons, else EXECUTE. Returns `{ outcome, reasons[] }`.
   Done when: €950 proposal → BLOCK, "Exceeds the €800 limit".
 - [ ] **S1 · App layout** — header "Metalurgi · Bank gateway" + orange "Synthetic data" badge; nav: Console, Bank app, Agent, Audit, NBG; placeholder pages.
   Done when: all pages reachable.
