@@ -158,7 +158,8 @@ export function checkMandate(
     fail("max_uses", `Mandate already used ${state.uses} of ${mandate.max_uses} times`);
   }
 
-  if (state.spent + proposal.amount > mandate.max_amount) {
+  // Only when the amount alone is within the limit, otherwise it just repeats the max_amount failure.
+  if (proposal.amount <= mandate.max_amount && state.spent + proposal.amount > mandate.max_amount) {
     fail(
       "budget",
       `Would bring the total to ${money(state.spent + proposal.amount)}, over the ${money(mandate.max_amount)} budget (${money(state.spent)} already spent)`,

@@ -97,6 +97,6 @@ describe("checkMandate", () => {
 
   it("reports every failure, not just the first", () => {
     const result = check({ city: "Lyon", amount: 950, currency: "USD" });
-    expect(rules(result)).toEqual(["city", "currency", "max_amount", "budget"]);
+    expect(rules(result)).toEqual(["city", "currency", "max_amount"]);
   });
 });

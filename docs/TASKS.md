@@ -20,7 +20,7 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
   Done when: all pages reachable.
 - [x] **S2 · Bank-app mandate screen** — request textarea, JSON editor prefilled with the template, Sign → `POST /api/mandates` (signs with Nino's key, stores in `lib/store.ts`).
   Done when: Sign shows "Signed", short signature and mandate_id.
-- [ ] **S3 · Test payment form** (temporary) — merchant + amount → `POST /api/payments` → E3 + E4 → shows outcome and reasons.
+- [x] **S3 · Test payment form** (temporary) — merchant + amount → `POST /api/payments` → E3 + E4 → shows outcome and reasons.
   Done when: the Phase 1 checkpoint works in the browser.
 - [ ] **A1 · Seed Nino's history** — `data/seed.ts`, fixed random seed, ~150 transactions over 12 months (groceries, transport, cafes + 8–10 hotel stays €90–160/night, all refundable, 2–3 known platforms). Fields: id, date, hour, amount, currency, merchant, category, refundable, nights.
   Done when: `npm run seed` writes `data/transactions.json`.
