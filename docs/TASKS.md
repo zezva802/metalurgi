@@ -10,7 +10,7 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
   Done when: `npm run dev` serves a page and `npm test` runs.
 - [x] **E1 · Mandate type + canonical JSON** — `lib/supervisor/mandate.ts`: `Mandate` type (see CLAUDE.md), `canonicalize()` sorts keys recursively.
   Done when: test shows key order doesn't change the canonical string.
-- [ ] **E2 · Ed25519 sign/verify** — Node `crypto` (`generateKeyPairSync('ed25519')`, `sign(null, …)`, `verify(null, …)`). `npm run keys` writes synthetic demo keys for Nino and `agent_travel_01` to `data/keys/`.
+- [x] **E2 · Ed25519 sign/verify** — Node `crypto` (`generateKeyPairSync('ed25519')`, `sign(null, …)`, `verify(null, …)`). `npm run keys` writes synthetic demo keys for Nino and `agent_travel_01` to `data/keys/`.
   Done when: sign→verify is true; changing `max_amount` after signing → false (scenario E).
 - [ ] **E3 · Hard mandate checks** — `checkMandate(mandate, signature, proposal, state)` → `{ pass, failures: [{ rule, message }] }`. Rules: signature, expiry, agent_id match, category, city, dates in range, amount ≤ max_amount, uses < max_uses, spent + amount ≤ max_amount.
   Done when: one test per rule passes, incl. D (€950) and G (second split payment).

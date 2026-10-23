@@ -1,3 +1,4 @@
+import { generateKeyPairSync, sign, verify, type KeyObject } from "node:crypto";
 import { z } from "zod";
 
 // A mandate is the narrow permission a customer signs for an agent.
@@ -41,4 +42,31 @@ function sortKeys(value: Json): Json {
 // Two mandates with the same content always produce the same string, whatever their key order.
 export function canonicalize(value: unknown): string {
   return JSON.stringify(sortKeys(value as Json));
+}
+
+// ---- Ed25519 signatures over canonical JSON ----
+// Used for mandates (signed by the customer) and payment proposals (signed by the agent).
+
+export type PublicKeyInput = KeyObject | string; // KeyObject or SPKI PEM
+export type PrivateKeyInput = KeyObject | string; // KeyObject or PKCS#8 PEM
+
+export function generateKeys(): { publicKey: KeyObject; privateKey: KeyObject } {
+  return generateKeyPairSync("ed25519");
+}
+
+// Returns a base64 signature of canonicalize(value).
+export function signCanonical(value: unknown, privateKey: PrivateKeyInput): string {
+  const data = Buffer.from(canonicalize(value), "utf8");
+  return sign(null, data, privateKey).toString("base64");
+}
+
+// True only if `signature` was made over exactly this content with the matching private key.
+// Malformed keys or signatures return false instead of throwing.
+export function verifyCanonical(value: unknown, signature: string, publicKey: PublicKeyInput): boolean {
+  try {
+    const data = Buffer.from(canonicalize(value), "utf8");
+    return verify(null, data, publicKey, Buffer.from(signature, "base64"));
+  } catch {
+    return false;
+  }
 }
