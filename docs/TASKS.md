@@ -26,7 +26,7 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
   Done when: `npm run seed` writes `data/transactions.json`.
 - [x] **A2 · Hotel catalog + merchant registry** — `data/hotels.json` (~20 Paris offers 20–23 Sep incl. scenario offers €540 / €760 non-refundable / €610 on paris-hotels-deal.shop / €950), `data/merchants.json` (domain, known, age_days).
   Done when: files exist with the scenario offers.
-- [ ] **A3 · Mock bank endpoints** — `GET /api/bank/ais/transactions`, `POST /api/bank/pis` → `{ payment_id, status: "executed" }` (called only by the gateway).
+- [x] **A3 · Mock bank endpoints** — `GET /api/bank/ais/transactions`, `POST /api/bank/pis` → `{ payment_id, status: "executed" }` (called only by the gateway).
   Done when: both respond.
 
 ## Phase 2 · Sat 09:00–19:00 · Real engine + bank screens
