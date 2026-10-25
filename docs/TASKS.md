@@ -60,7 +60,7 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
 ## Phase 3 · Sat 19:00–01:00 · Proof and evidence
 **Checkpoint:** all 8 scenarios correct; `npm run attacks` prints "0 of N attacks executed".
 
-- [ ] **E11 · Attack suite** — `tests/attacks.test.ts` + `npm run attacks`: forged signature, altered mandate, revoked, reused single-use, split over budget, expired, unknown agent, wrong agent key.
+- [x] **E11 · Attack suite** — `tests/attacks.test.ts` + `npm run attacks`: forged signature, altered mandate, revoked, reused single-use, split over budget, expired, unknown agent, wrong agent key.
   Done when: prints 0 of N executed.
 - [ ] **E12 · Latency** — time each decision (`performance.now()`), store in audit; script runs 200 decisions and prints p95.
   Done when: one real p95 number.
