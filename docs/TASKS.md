@@ -44,9 +44,9 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
   Done when: C high with 3 named signals; A low.
 - [x] **E10 · Decision policy** — `data/policy.json` + `policy.ts`; reasons = failed rules or top 2–3 signals in plain words; test that scores never override a mandate BLOCK.
   Done when: `tests/scenarios.test.ts` A–H all pass.
-- [ ] **S4 · Risk Officer Console** (`/console`) — counters (executed / verify / asked / blocked), table newest first (time, agent, merchant, amount, outcome badge, reason), refresh every 2 s, row → detail.
+- [x] **S4 · Risk Officer Console** (`/console`) — counters (executed / verify / asked / blocked), table newest first (time, agent, merchant, amount, outcome badge, reason), refresh every 2 s, row → detail.
   Done when: new payments appear within 2 s.
-- [ ] **S5 · Decision detail** — 4 cards (Mandate rules pass/fail, Behavior bars, Context bars, Decision + reasons).
+- [x] **S5 · Decision detail** — 4 cards (Mandate rules pass/fail, Behavior bars, Context bars, Decision + reasons).
   Done when: scenario C shows its 3 context bars.
 - [ ] **S6 · Approval in bank app** — pending ASK_HUMAN/VERIFY list with Approve/Reject; approve → mock bank + log approver.
   Done when: B can be approved and the console row updates.

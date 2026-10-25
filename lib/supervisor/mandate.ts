@@ -1,6 +1,9 @@
 import { generateKeyPairSync, sign, verify, type KeyObject } from "node:crypto";
 import { z } from "zod";
+import { formatMoney } from "../money";
 import type { Proposal } from "./proposal";
+
+export { formatMoney };
 
 // A mandate is the narrow permission a customer signs for an agent.
 // Everything except `preferences` is a hard rule checked before any payment.
@@ -99,14 +102,6 @@ export type MandateState = {
   revoked?: boolean; // the customer has cancelled this mandate
   now: Date;
 };
-
-const SYMBOLS: Record<string, string> = { EUR: "€", USD: "$", GBP: "£", GEL: "₾" };
-
-export function formatMoney(amount: number, currency: string): string {
-  const symbol = SYMBOLS[currency];
-  const value = amount.toLocaleString("en-US", { maximumFractionDigits: 2 });
-  return symbol ? `${symbol}${value}` : `${value} ${currency}`;
-}
 
 export function checkMandate(
   mandate: Mandate,

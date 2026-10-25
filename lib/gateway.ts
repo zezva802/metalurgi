@@ -1,5 +1,6 @@
 import { checkAgent, type AgentCheck } from "./agents";
 import { authorizePayment, executePayment, getTransactions, type Payment } from "./bank";
+import { recordDecision } from "./decisions";
 import { loadPublicKey } from "./keys";
 import { getMandate, getUsage, isRevoked, recordExecution } from "./store";
 import { scoreBehavior } from "./supervisor/behavior";
@@ -63,7 +64,7 @@ export function evaluatePayment(proposal: Proposal, signature: string, now = new
     }
   }
 
-  return {
+  const result: GatewayResult = {
     proposal_id: proposal.proposal_id,
     mandate_id: proposal.mandate_id,
     decision,
@@ -73,4 +74,7 @@ export function evaluatePayment(proposal: Proposal, signature: string, now = new
     context,
     payment,
   };
+
+  recordDecision(proposal, result, now);
+  return result;
 }

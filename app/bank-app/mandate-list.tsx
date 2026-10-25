@@ -4,7 +4,7 @@
 // move money — the gateway turns any payment under it into a hard BLOCK (scenario F).
 
 import { useCallback, useEffect, useState } from "react";
-import { formatMoney } from "@/lib/supervisor/mandate";
+import { formatMoney } from "@/lib/money";
 import type { StoredMandate } from "@/lib/store";
 
 type MandateRow = StoredMandate & { revoked: boolean };
