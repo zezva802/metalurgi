@@ -6,9 +6,9 @@ import OpenAI from "openai";
 
 const BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/";
 
-// Which Gemini model to use. Default is a safe, widely-available flash model; override with
-// GEMINI_MODEL (current Google docs show newer ids like gemini-3.8-flash — set whatever your key has).
-export const GEMINI_MODEL = process.env.GEMINI_MODEL ?? "gemini-2.5-flash";
+// Which Gemini model to use. Default is the "latest flash" alias so it tracks the current model and
+// won't go stale; override with GEMINI_MODEL for a pinned id (e.g. gemini-2.5-flash, gemini-3.8-flash).
+export const GEMINI_MODEL = process.env.GEMINI_MODEL ?? "gemini-flash-latest";
 
 export function hasLlm(): boolean {
   return Boolean(process.env.GEMINI_API_KEY);
