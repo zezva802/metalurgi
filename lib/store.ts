@@ -52,6 +52,13 @@ export function getUsage(id: string): Usage {
   return store.usage.get(id) ?? { uses: 0, spent: 0 };
 }
 
+// Called only after a payment actually executes, in the same gateway pass as the check, so the next
+// proposal on this mandate sees the updated count and total (scenario G: single-use, budget).
+export function recordExecution(id: string, amount: number): void {
+  const current = getUsage(id);
+  store.usage.set(id, { uses: current.uses + 1, spent: current.spent + amount });
+}
+
 // Revocation: the customer can cancel a mandate at any time. Revoked is permanent for the demo.
 export function revokeMandate(id: string): boolean {
   if (!store.mandates.has(id)) return false;

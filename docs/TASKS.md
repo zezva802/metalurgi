@@ -36,7 +36,7 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
   Done when: unknown agent and wrong key both BLOCK (H).
 - [x] **E6 · Revocation** — revoked set, `POST /api/mandates/[id]/revoke`, rule "not revoked", Revoke button in bank app.
   Done when: payment after revoke → BLOCK (F).
-- [ ] **E7 · Uses + running total** — check and update in one function, only after execution.
+- [x] **E7 · Uses + running total** — check and update in one function, only after execution.
   Done when: split-payment test passes (G).
 - [ ] **E8 · Behavior envelope + score** — `behavior.ts`, signals per CLAUDE.md, returns `{ total, signals }`.
   Done when: A low; B's points mostly from "non-refundable".

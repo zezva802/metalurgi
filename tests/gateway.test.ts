@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { generateKeys, signCanonical } from "@/lib/supervisor/mandate";
 import { resetStore, revokeMandate, saveMandate } from "@/lib/store";
+import { resetBank } from "@/lib/bank";
 import { evaluatePayment } from "@/lib/gateway";
 import type { Proposal } from "@/lib/supervisor/proposal";
 import { BEFORE_EXPIRY, MANDATE, PROPOSAL_A } from "./fixtures";
@@ -17,6 +18,7 @@ const sign = (proposal: Proposal) => signCanonical(proposal, agent.privateKey);
 
 beforeEach(() => {
   resetStore();
+  resetBank();
   saveMandate({ mandate: MANDATE, signature: signCanonical(MANDATE, nino.privateKey), signed_at: "2026-09-01T09:00:00Z" });
 });
 
@@ -53,6 +55,21 @@ describe("evaluatePayment", () => {
     const { decision } = evaluatePayment(PROPOSAL_A, signCanonical(PROPOSAL_A, wrong.privateKey), BEFORE_EXPIRY);
     expect(decision.outcome).toBe("BLOCK");
     expect(decision.reasons.some((r) => r.includes("signature is invalid"))).toBe(true);
+  });
+
+  it("scenario A executes a payment at the bank and records usage", () => {
+    const { payment } = evaluatePayment(PROPOSAL_A, sign(PROPOSAL_A), BEFORE_EXPIRY);
+    expect(payment?.status).toBe("executed");
+    expect(payment?.amount).toBe(540);
+  });
+
+  it("scenario G: two payments on a single-use mandate → 1st EXECUTE, 2nd BLOCK", () => {
+    const p1 = { ...PROPOSAL_A, proposal_id: "p_g1", amount: 475 };
+    const p2 = { ...PROPOSAL_A, proposal_id: "p_g2", amount: 475 };
+    expect(evaluatePayment(p1, sign(p1), BEFORE_EXPIRY).decision.outcome).toBe("EXECUTE");
+    const { decision } = evaluatePayment(p2, sign(p2), BEFORE_EXPIRY);
+    expect(decision.outcome).toBe("BLOCK");
+    expect(decision.reasons.some((r) => r.includes("already used 1 of 1"))).toBe(true);
   });
 
   it("scenario F: payment after revoke → BLOCK", () => {
