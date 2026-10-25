@@ -1,5 +1,15 @@
-import { Placeholder } from "@/components/placeholder";
+import { ConsoleView } from "./console-view";
+import { PolicySliders } from "./policy-sliders";
 
 export default function Page() {
-  return <Placeholder title="Risk Officer Console" who="For the bank's fraud analyst: every agent payment and its decision." task="S4" />;
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-4xl font-bold">Risk Officer Console</h1>
+        <p className="text-xl text-slate-600">Every agent payment and the gateway&apos;s decision, newest first.</p>
+      </div>
+      <PolicySliders />
+      <ConsoleView />
+    </div>
+  );
 }

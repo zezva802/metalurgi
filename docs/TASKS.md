@@ -32,51 +32,51 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
 ## Phase 2 · Sat 09:00–19:00 · Real engine + bank screens
 **Checkpoint (Sat 19:00):** scenario A end to end: agent proposes → EXECUTE → mock bank pays → row in console.
 
-- [ ] **E5 · Agent registry + agent signature** — `data/agents.json` (agent_id, operator, public_key, status). Gateway verifies agent exists, is active, proposal signature valid, mandate names this agent.
+- [x] **E5 · Agent registry + agent signature** — `data/agents.json` (agent_id, operator, status; verifying key loaded from `data/keys/`). Gateway verifies agent exists, is active, proposal signature valid, mandate names this agent.
   Done when: unknown agent and wrong key both BLOCK (H).
-- [ ] **E6 · Revocation** — revoked set, `POST /api/mandates/[id]/revoke`, rule "not revoked", Revoke button in bank app.
+- [x] **E6 · Revocation** — revoked set, `POST /api/mandates/[id]/revoke`, rule "not revoked", Revoke button in bank app.
   Done when: payment after revoke → BLOCK (F).
-- [ ] **E7 · Uses + running total** — check and update in one function, only after execution.
+- [x] **E7 · Uses + running total** — check and update in one function, only after execution.
   Done when: split-payment test passes (G).
-- [ ] **E8 · Behavior envelope + score** — `behavior.ts`, signals per CLAUDE.md, returns `{ total, signals }`.
+- [x] **E8 · Behavior envelope + score** — `behavior.ts`, signals per CLAUDE.md, returns `{ total, signals }`.
   Done when: A low; B's points mostly from "non-refundable".
-- [ ] **E9 · Context risk** — `context.ts`, signals per CLAUDE.md.
+- [x] **E9 · Context risk** — `context.ts`, signals per CLAUDE.md.
   Done when: C high with 3 named signals; A low.
-- [ ] **E10 · Decision policy** — `data/policy.json` + `policy.ts`; reasons = failed rules or top 2–3 signals in plain words; test that scores never override a mandate BLOCK.
+- [x] **E10 · Decision policy** — `data/policy.json` + `policy.ts`; reasons = failed rules or top 2–3 signals in plain words; test that scores never override a mandate BLOCK.
   Done when: `tests/scenarios.test.ts` A–H all pass.
-- [ ] **S4 · Risk Officer Console** (`/console`) — counters (executed / verify / asked / blocked), table newest first (time, agent, merchant, amount, outcome badge, reason), refresh every 2 s, row → detail.
+- [x] **S4 · Risk Officer Console** (`/console`) — counters (executed / verify / asked / blocked), table newest first (time, agent, merchant, amount, outcome badge, reason), refresh every 2 s, row → detail.
   Done when: new payments appear within 2 s.
-- [ ] **S5 · Decision detail** — 4 cards (Mandate rules pass/fail, Behavior bars, Context bars, Decision + reasons).
+- [x] **S5 · Decision detail** — 4 cards (Mandate rules pass/fail, Behavior bars, Context bars, Decision + reasons).
   Done when: scenario C shows its 3 context bars.
-- [ ] **S6 · Approval in bank app** — pending ASK_HUMAN/VERIFY list with Approve/Reject; approve → mock bank + log approver.
+- [x] **S6 · Approval in bank app** — pending ASK_HUMAN/VERIFY list with Approve/Reject; approve → mock bank + log approver.
   Done when: B can be approved and the console row updates.
-- [ ] **A4 · LLM agent** — `lib/agent/`, tools `search_hotels`, `compare_offers`, `propose_payment`; run log of every tool call; proposal signed with agent key → `/api/payments`.
-  Done when: "Book Nino's Paris hotel" reaches the gateway with a visible run log.
-- [ ] **A5 · Mandate drafting** — LLM turns the request into mandate JSON, zod-validated, editable before signing; template on failure.
-  Done when: the Paris request fills a valid mandate.
-- [ ] **A6 · Scripted agent** — buttons A–H on `/agent` replaying fixed proposals through the same API.
+- [x] **A4 · LLM agent** — `lib/agent/`, tools `search_hotels`, `compare_offers`, `propose_payment`; run log of every tool call; proposal signed with agent key → the gateway.
+  Done when: "Book Nino's Paris hotel" reaches the gateway with a visible run log. (Live path needs ANTHROPIC_API_KEY; tools + gateway path unit-tested, keyless fallback points at the scripted agent.)
+- [x] **A5 · Mandate drafting** — LLM turns the request into mandate JSON, zod-validated, editable before signing; template on failure.
+  Done when: the Paris request fills a valid mandate. (Falls back to the template without a key.)
+- [x] **A6 · Scripted agent** — buttons A–H on `/agent` replaying fixed proposals through the same API.
   Done when: every button gives its expected outcome.
 
 ## Phase 3 · Sat 19:00–01:00 · Proof and evidence
 **Checkpoint:** all 8 scenarios correct; `npm run attacks` prints "0 of N attacks executed".
 
-- [ ] **E11 · Attack suite** — `tests/attacks.test.ts` + `npm run attacks`: forged signature, altered mandate, revoked, reused single-use, split over budget, expired, unknown agent, wrong agent key.
+- [x] **E11 · Attack suite** — `tests/attacks.test.ts` + `npm run attacks`: forged signature, altered mandate, revoked, reused single-use, split over budget, expired, unknown agent, wrong agent key.
   Done when: prints 0 of N executed.
-- [ ] **E12 · Latency** — time each decision (`performance.now()`), store in audit; script runs 200 decisions and prints p95.
+- [x] **E12 · Latency** — time each decision (`performance.now()`), store in audit; script runs 200 decisions and prints p95.
   Done when: one real p95 number.
-- [ ] **E13 · Tune thresholds** — adjust policy/signal points until A–H pass; document final values in README.
+- [x] **E13 · Tune thresholds** — adjust policy/signal points until A–H pass; document final values in README.
   Done when: scenario tests green 3 runs in a row.
-- [ ] **S7 · Audit log** (`/audit`) — time, mandate_id, mandate hash (SHA-256 of canonical JSON), agent, amount, scores, outcome, reasons, approver, latency; persisted; filter by outcome.
+- [x] **S7 · Audit log** (`/audit`) — time, mandate_id, mandate hash (SHA-256 of canonical JSON), agent, amount, scores, outcome, reasons, approver, latency; persisted; filter by outcome.
   Done when: entries survive a restart.
-- [ ] **S8 · NBG report** (`/nbg`) — counts per outcome, attacks blocked by type, p95, number of agents; no personal data.
+- [x] **S8 · NBG report** (`/nbg`) — counts per outcome, attacks blocked by type, p95, number of agents; no personal data.
   Done when: page shows numbers, no names/amounts per person.
-- [ ] **S9 · Sliders, badge, errors** — console sliders edit policy in memory; badge on every page; LLM failure → message suggesting scripted agent.
+- [x] **S9 · Sliders, badge, errors** — console sliders edit policy in memory; badge on every page; LLM failure → message suggesting scripted agent.
   Done when: lowering the behavior threshold makes A ask for approval.
-- [ ] **A7 · Live agent log** — `/agent` shows tool calls as they happen.
-- [ ] **A8 · Batch run (stretch)** — 200 synthetic proposals with 20 bad ones → counts per outcome.
+- [x] **A7 · Live agent log** — `/agent` shows tool calls as they happen. (Streamed as NDJSON; live tool-call stream needs ANTHROPIC_API_KEY, keyless path streams the scripted-agent message.)
+- [x] **A8 · Batch run (stretch)** — 200 synthetic proposals with 20 bad ones → counts per outcome. (`npm run batch` / button: 150 EXECUTE, 15 VERIFY, 15 ASK_HUMAN, 20 BLOCK.)
 
 ## Phase 4 · Sun 09:00–12:00 · Polish, then freeze at 12:00
-- [ ] **E14 · README** — what it does; setup (`npm install`, `.env.local`, `npm run keys`, `npm run seed`, `npm run dev`, `npm test`, `npm run attacks`); architecture; third-party components + licenses; Guardrails section pointing to files; what's synthetic/mocked.
-- [ ] **S10 · Polish** — consistent outcome colours, big fonts for video, no console errors.
+- [x] **E14 · README** — what it does; setup (`npm install`, `.env.local`, `npm run keys`, `npm run seed`, `npm run dev`, `npm test`, `npm run attacks`); architecture; third-party components + licenses; Guardrails section pointing to files; what's synthetic/mocked.
+- [x] **S10 · Polish** — consistent outcome colours, big fonts for video, no console errors.
 - [ ] **S11 · Deploy (optional)** — Vercel, scripted agent default.
-- [ ] **A9 · Final runs** — A–H three times each from a clean start; also with the LLM key removed.
+- [x] **A9 · Final runs** — A–H three times each from a clean start; also with the LLM key removed. (`npm run finalrun`: A–H correct in all 3 clean-start passes; key-removed fallbacks OK.)

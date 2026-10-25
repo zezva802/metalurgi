@@ -1,12 +1,18 @@
+import { BatchRun } from "./batch-run";
+import { LiveAgent } from "./live-agent";
+import { ScriptedAgent } from "./scripted-agent";
 import { TestPaymentForm } from "./test-payment-form";
 
 export default function Page() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
         <h1 className="text-4xl font-bold">Agent</h1>
-        <p className="text-xl text-slate-600">The AI travel agent that books on Nino&apos;s behalf. Live agent comes in A4.</p>
+        <p className="text-xl text-slate-600">The AI travel agent that books on Nino&apos;s behalf.</p>
       </div>
+      <ScriptedAgent />
+      <LiveAgent />
+      <BatchRun />
       <TestPaymentForm />
     </div>
   );

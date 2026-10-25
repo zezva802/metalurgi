@@ -1,0 +1,12 @@
+[
+  {
+    "agent_id": "agent_travel_01",
+    "operator": "Metalurgi Travel Sandbox",
+    "status": "active"
+  },
+  {
+    "agent_id": "agent_legacy_01",
+    "operator": "Retired pilot agent",
+    "status": "suspended"
+  }
+]
