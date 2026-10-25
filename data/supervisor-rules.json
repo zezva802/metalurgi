@@ -1,0 +1,43 @@
+{
+  "thresholds": {
+    "minRuns": 20,
+    "cleanRunRatioAuthorise": 0.9,
+    "cleanRunRatioMonitor": 0.7,
+    "concentrationPct": 0.8
+  },
+  "rules": [
+    { "id": "MAN-1", "specialist": "Mandate", "label": "Payment within the signed amount cap", "severity": "high", "enabled": true },
+    { "id": "MAN-2", "specialist": "Mandate", "label": "Category and city match the mandate", "severity": "high", "enabled": true },
+    { "id": "MAN-3", "specialist": "Mandate", "label": "Purchase matches the mandate's intent", "severity": "medium", "enabled": true },
+
+    { "id": "KYA-1", "specialist": "KYA", "label": "Agent is in the bank's registry", "severity": "hard", "enabled": true },
+    { "id": "KYA-2", "specialist": "KYA", "label": "Agent is active (not suspended)", "severity": "hard", "enabled": true },
+    { "id": "KYA-3", "specialist": "KYA", "label": "Model is not on the banned list", "severity": "hard", "enabled": true },
+    { "id": "KYA-4", "specialist": "KYA", "label": "Declared purpose matches observed behaviour", "severity": "medium", "enabled": true },
+
+    { "id": "PRV-1", "specialist": "Provenance", "label": "Run record and signature present", "severity": "high", "enabled": true },
+    { "id": "PRV-2", "specialist": "Provenance", "label": "Evidence trail is plausibly genuine", "severity": "medium", "enabled": true },
+
+    { "id": "INJ-1", "specialist": "Injection", "label": "No known prompt-injection pattern in the run", "severity": "high", "enabled": true },
+    { "id": "INJ-2", "specialist": "Injection", "label": "Agent did not obey an injected instruction", "severity": "hard", "enabled": true },
+
+    { "id": "CPY-1", "specialist": "Counterparty", "label": "Merchant is in the registry", "severity": "medium", "enabled": true },
+    { "id": "CPY-2", "specialist": "Counterparty", "label": "Merchant is not sanctioned/blocked (AML)", "severity": "hard", "enabled": true },
+    { "id": "CPY-3", "specialist": "Counterparty", "label": "Recipient is consistent with the stated purpose", "severity": "medium", "enabled": true },
+
+    { "id": "CON-1", "specialist": "Consent", "label": "Consent record present and covers the action", "severity": "high", "enabled": true },
+    { "id": "CON-2", "specialist": "Consent", "label": "What executed matches what the human requested", "severity": "high", "enabled": true },
+
+    { "id": "LOG-1", "specialist": "Log", "label": "Required logs present and well-formed", "severity": "medium", "enabled": true },
+    { "id": "LOG-2", "specialist": "Log", "label": "Logs tell one coherent story", "severity": "low", "enabled": true },
+
+    { "id": "DRF-1", "specialist": "Drift", "label": "Spend stays within the agent's historical band", "severity": "medium", "enabled": true },
+
+    { "id": "CTL-1", "specialist": "Control Assurance", "label": "Required controls ran", "severity": "high", "enabled": true },
+    { "id": "CTL-2", "specialist": "Control Assurance", "label": "No control fired and was overridden", "severity": "hard", "enabled": true },
+
+    { "id": "SYS-1", "specialist": "Systemic", "label": "No over-concentration on one merchant or model", "severity": "low", "enabled": true },
+
+    { "id": "RED-1", "specialist": "Red Team", "label": "Adversarial probes are all blocked", "severity": "hard", "enabled": true }
+  ]
+}

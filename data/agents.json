@@ -5,6 +5,11 @@
     "status": "active"
   },
   {
+    "agent_id": "agent_shopper_01",
+    "operator": "ShopWell Agents Ltd",
+    "status": "active"
+  },
+  {
     "agent_id": "agent_legacy_01",
     "operator": "Retired pilot agent",
     "status": "suspended"

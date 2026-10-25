@@ -7,6 +7,7 @@ export const NAV = [
   { href: "/console", label: "Console" },
   { href: "/bank-app", label: "Bank app" },
   { href: "/agent", label: "Agent" },
+  { href: "/supervisor", label: "Supervisor" },
   { href: "/audit", label: "Audit" },
   { href: "/nbg", label: "NBG" },
 ];

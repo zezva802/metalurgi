@@ -15,11 +15,15 @@ vi.mock("@/lib/keys", () => ({
   loadPrivateKey: () => key.privateKey,
 }));
 
+// proposePayment uses the real clock (no injected `now`), so give the mandate a far-future expiry —
+// the shared MANDATE fixture expires 2026-10-25, which would make this time-dependent.
+const MANDATE_FUTURE = { ...MANDATE, expires_at: "2027-12-31T23:59:00Z" };
+
 beforeEach(() => {
   resetStore();
   resetBank();
   resetDecisions();
-  saveMandate({ mandate: MANDATE, signature: signCanonical(MANDATE, key.privateKey), signed_at: "2026-09-01T09:00:00Z" });
+  saveMandate({ mandate: MANDATE_FUTURE, signature: signCanonical(MANDATE_FUTURE, key.privateKey), signed_at: "2026-09-01T09:00:00Z" });
 });
 
 describe("agent tools", () => {
