@@ -6,7 +6,7 @@ import { getMandate, getUsage, isRevoked, recordExecution } from "./store";
 import { scoreBehavior } from "./supervisor/behavior";
 import { scoreContext } from "./supervisor/context";
 import { decide, type Decision } from "./supervisor/decide";
-import { checkMandate, type MandateCheck } from "./supervisor/mandate";
+import { checkMandate, hashMandate, type MandateCheck } from "./supervisor/mandate";
 import type { Proposal } from "./supervisor/proposal";
 import type { Score } from "./supervisor/signals";
 
@@ -22,6 +22,7 @@ export type GatewayResult = {
   mandate_check: MandateCheck;
   behavior: Score;
   context: Score;
+  mandate_hash: string | null; // SHA-256 of the mandate at decision time, for the audit log (S7)
   latency_ms: number; // how long the gateway took to decide (E12)
   payment?: Payment; // present only when the decision was EXECUTE and the bank moved money
 };
@@ -74,6 +75,7 @@ export function evaluatePayment(proposal: Proposal, signature: string, now = new
     mandate_check: mandateCheck,
     behavior,
     context,
+    mandate_hash: stored ? hashMandate(stored.mandate) : null,
     latency_ms: performance.now() - start,
     payment,
   };

@@ -1,4 +1,4 @@
-import { generateKeyPairSync, sign, verify, type KeyObject } from "node:crypto";
+import { createHash, generateKeyPairSync, sign, verify, type KeyObject } from "node:crypto";
 import { z } from "zod";
 import { formatMoney } from "../money";
 import type { Proposal } from "./proposal";
@@ -46,6 +46,11 @@ function sortKeys(value: Json): Json {
 // Two mandates with the same content always produce the same string, whatever their key order.
 export function canonicalize(value: unknown): string {
   return JSON.stringify(sortKeys(value as Json));
+}
+
+// SHA-256 of the canonical mandate — a stable fingerprint for the audit log (S7).
+export function hashMandate(mandate: Mandate): string {
+  return createHash("sha256").update(canonicalize(mandate)).digest("hex");
 }
 
 // ---- Ed25519 signatures over canonical JSON ----

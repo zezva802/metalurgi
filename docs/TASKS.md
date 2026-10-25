@@ -66,7 +66,7 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
   Done when: one real p95 number.
 - [x] **E13 · Tune thresholds** — adjust policy/signal points until A–H pass; document final values in README.
   Done when: scenario tests green 3 runs in a row.
-- [ ] **S7 · Audit log** (`/audit`) — time, mandate_id, mandate hash (SHA-256 of canonical JSON), agent, amount, scores, outcome, reasons, approver, latency; persisted; filter by outcome.
+- [x] **S7 · Audit log** (`/audit`) — time, mandate_id, mandate hash (SHA-256 of canonical JSON), agent, amount, scores, outcome, reasons, approver, latency; persisted; filter by outcome.
   Done when: entries survive a restart.
 - [ ] **S8 · NBG report** (`/nbg`) — counts per outcome, attacks blocked by type, p95, number of agents; no personal data.
   Done when: page shows numbers, no names/amounts per person.

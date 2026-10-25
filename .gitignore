@@ -42,3 +42,6 @@ next-env.d.ts
 
 # synthetic demo keys (npm run keys)
 /data/keys/
+
+# persisted audit log (runtime, S7)
+/data/audit.json
