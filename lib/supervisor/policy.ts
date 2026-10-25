@@ -10,13 +10,31 @@ export type Policy = { contextBlock: number; contextVerify: number; behaviorAsk:
 
 export const DEFAULT_POLICY: Policy = policyJson;
 
+// The live policy is mutable in memory so the console sliders (S9) can tune thresholds without a
+// restart. Kept on globalThis to survive hot reloads; resets to DEFAULT_POLICY on a real restart.
+const g = globalThis as typeof globalThis & { __metalurgiPolicy?: Policy };
+
+export function getPolicy(): Policy {
+  return (g.__metalurgiPolicy ??= { ...DEFAULT_POLICY });
+}
+
+export function setPolicy(patch: Partial<Policy>): Policy {
+  g.__metalurgiPolicy = { ...getPolicy(), ...patch };
+  return g.__metalurgiPolicy;
+}
+
+export function resetPolicy(): Policy {
+  g.__metalurgiPolicy = { ...DEFAULT_POLICY };
+  return g.__metalurgiPolicy;
+}
+
 // Starting policy (docs/CLAUDE.md), tuned in E13:
 //   context >= contextBlock  -> BLOCK   (external risk too high)
 //   behavior >= behaviorAsk  -> ASK_HUMAN (unusual for Nino — a person should look)
 //   context >= contextVerify -> VERIFY  (worth an extra confirmation step)
 //   otherwise                -> EXECUTE
 // ASK_HUMAN is checked before VERIFY so the more restrictive outcome wins when both apply.
-export function applyPolicy(behavior: Score, context: Score, policy: Policy = DEFAULT_POLICY): { outcome: Outcome; reasons: string[] } {
+export function applyPolicy(behavior: Score, context: Score, policy: Policy = getPolicy()): { outcome: Outcome; reasons: string[] } {
   if (context.total >= policy.contextBlock) {
     return { outcome: "BLOCK", reasons: topReasons(context, behavior) };
   }

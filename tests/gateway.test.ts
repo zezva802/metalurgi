@@ -63,6 +63,12 @@ describe("evaluatePayment", () => {
     expect(payment?.amount).toBe(540);
   });
 
+  it("records a non-negative decision latency (E12)", () => {
+    const { latency_ms } = evaluatePayment(PROPOSAL_A, sign(PROPOSAL_A), BEFORE_EXPIRY);
+    expect(typeof latency_ms).toBe("number");
+    expect(latency_ms).toBeGreaterThanOrEqual(0);
+  });
+
   it("scenario G: two payments on a single-use mandate → 1st EXECUTE, 2nd BLOCK", () => {
     const p1 = { ...PROPOSAL_A, proposal_id: "p_g1", amount: 475 };
     const p2 = { ...PROPOSAL_A, proposal_id: "p_g2", amount: 475 };

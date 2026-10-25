@@ -60,23 +60,23 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
 ## Phase 3 · Sat 19:00–01:00 · Proof and evidence
 **Checkpoint:** all 8 scenarios correct; `npm run attacks` prints "0 of N attacks executed".
 
-- [ ] **E11 · Attack suite** — `tests/attacks.test.ts` + `npm run attacks`: forged signature, altered mandate, revoked, reused single-use, split over budget, expired, unknown agent, wrong agent key.
+- [x] **E11 · Attack suite** — `tests/attacks.test.ts` + `npm run attacks`: forged signature, altered mandate, revoked, reused single-use, split over budget, expired, unknown agent, wrong agent key.
   Done when: prints 0 of N executed.
-- [ ] **E12 · Latency** — time each decision (`performance.now()`), store in audit; script runs 200 decisions and prints p95.
+- [x] **E12 · Latency** — time each decision (`performance.now()`), store in audit; script runs 200 decisions and prints p95.
   Done when: one real p95 number.
-- [ ] **E13 · Tune thresholds** — adjust policy/signal points until A–H pass; document final values in README.
+- [x] **E13 · Tune thresholds** — adjust policy/signal points until A–H pass; document final values in README.
   Done when: scenario tests green 3 runs in a row.
-- [ ] **S7 · Audit log** (`/audit`) — time, mandate_id, mandate hash (SHA-256 of canonical JSON), agent, amount, scores, outcome, reasons, approver, latency; persisted; filter by outcome.
+- [x] **S7 · Audit log** (`/audit`) — time, mandate_id, mandate hash (SHA-256 of canonical JSON), agent, amount, scores, outcome, reasons, approver, latency; persisted; filter by outcome.
   Done when: entries survive a restart.
-- [ ] **S8 · NBG report** (`/nbg`) — counts per outcome, attacks blocked by type, p95, number of agents; no personal data.
+- [x] **S8 · NBG report** (`/nbg`) — counts per outcome, attacks blocked by type, p95, number of agents; no personal data.
   Done when: page shows numbers, no names/amounts per person.
-- [ ] **S9 · Sliders, badge, errors** — console sliders edit policy in memory; badge on every page; LLM failure → message suggesting scripted agent.
+- [x] **S9 · Sliders, badge, errors** — console sliders edit policy in memory; badge on every page; LLM failure → message suggesting scripted agent.
   Done when: lowering the behavior threshold makes A ask for approval.
-- [ ] **A7 · Live agent log** — `/agent` shows tool calls as they happen.
-- [ ] **A8 · Batch run (stretch)** — 200 synthetic proposals with 20 bad ones → counts per outcome.
+- [x] **A7 · Live agent log** — `/agent` shows tool calls as they happen. (Streamed as NDJSON; live tool-call stream needs ANTHROPIC_API_KEY, keyless path streams the scripted-agent message.)
+- [x] **A8 · Batch run (stretch)** — 200 synthetic proposals with 20 bad ones → counts per outcome. (`npm run batch` / button: 150 EXECUTE, 15 VERIFY, 15 ASK_HUMAN, 20 BLOCK.)
 
 ## Phase 4 · Sun 09:00–12:00 · Polish, then freeze at 12:00
-- [ ] **E14 · README** — what it does; setup (`npm install`, `.env.local`, `npm run keys`, `npm run seed`, `npm run dev`, `npm test`, `npm run attacks`); architecture; third-party components + licenses; Guardrails section pointing to files; what's synthetic/mocked.
-- [ ] **S10 · Polish** — consistent outcome colours, big fonts for video, no console errors.
+- [x] **E14 · README** — what it does; setup (`npm install`, `.env.local`, `npm run keys`, `npm run seed`, `npm run dev`, `npm test`, `npm run attacks`); architecture; third-party components + licenses; Guardrails section pointing to files; what's synthetic/mocked.
+- [x] **S10 · Polish** — consistent outcome colours, big fonts for video, no console errors.
 - [ ] **S11 · Deploy (optional)** — Vercel, scripted agent default.
-- [ ] **A9 · Final runs** — A–H three times each from a clean start; also with the LLM key removed.
+- [x] **A9 · Final runs** — A–H three times each from a clean start; also with the LLM key removed. (`npm run finalrun`: A–H correct in all 3 clean-start passes; key-removed fallbacks OK.)

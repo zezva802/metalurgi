@@ -1,3 +1,5 @@
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 import { authorizePayment, executePayment, type Payment } from "./bank";
 import { recordExecution } from "./store";
 import type { GatewayResult } from "./gateway";
@@ -23,12 +25,70 @@ const PENDING_OUTCOMES: Outcome[] = ["VERIFY", "ASK_HUMAN"];
 
 type Log = { records: DecisionRecord[]; next: number };
 
+// Persist only inside the Next server (NEXT_RUNTIME is set there) so the audit log survives a
+// restart (S7). Tests and the CLI scripts (attacks, latency) stay purely in-memory and never touch
+// the file — so running them can't wipe the demo's audit history.
+const PERSIST = process.env.NEXT_RUNTIME === "nodejs";
+const FILE = join(process.cwd(), "data", "audit.json");
+
+// Rows persisted by an older build may be missing fields added later (latency_ms, mandate_hash, the
+// score blocks). Fill safe defaults on load so no consumer has to guard against schema drift.
+type RawRecord = { id: number; decided_at: string; proposal: Proposal; resolution?: Resolution; result?: Partial<GatewayResult> };
+
+function normalize(raw: RawRecord): DecisionRecord {
+  const r = raw.result ?? {};
+  return {
+    id: raw.id,
+    decided_at: raw.decided_at,
+    proposal: raw.proposal,
+    ...(raw.resolution ? { resolution: raw.resolution } : {}),
+    result: {
+      proposal_id: r.proposal_id ?? raw.proposal.proposal_id,
+      mandate_id: r.mandate_id ?? raw.proposal.mandate_id,
+      decision: r.decision ?? { outcome: "BLOCK", reasons: [] },
+      agent_check: r.agent_check ?? { pass: true, failures: [] },
+      mandate_check: r.mandate_check ?? { pass: true, failures: [] },
+      behavior: r.behavior ?? { total: 0, signals: [] },
+      context: r.context ?? { total: 0, signals: [] },
+      mandate_hash: r.mandate_hash ?? null,
+      latency_ms: r.latency_ms ?? 0,
+      ...(r.payment ? { payment: r.payment } : {}),
+    },
+  };
+}
+
+function load(): Log {
+  if (PERSIST) {
+    try {
+      if (existsSync(FILE)) {
+        const raw: RawRecord[] = JSON.parse(readFileSync(FILE, "utf8"));
+        const records = raw.map(normalize);
+        return { records, next: records.reduce((max, r) => Math.max(max, r.id), 0) + 1 };
+      }
+    } catch {
+      // corrupt or unreadable file — start fresh rather than crash
+    }
+  }
+  return { records: [], next: 1 };
+}
+
+function save(): void {
+  if (!PERSIST) return;
+  try {
+    mkdirSync(dirname(FILE), { recursive: true });
+    writeFileSync(FILE, JSON.stringify(log.records, null, 2));
+  } catch {
+    // best-effort; a failed write must not break a decision
+  }
+}
+
 const g = globalThis as typeof globalThis & { __metalurgiDecisions?: Log };
-const log: Log = (g.__metalurgiDecisions ??= { records: [], next: 1 });
+const log: Log = (g.__metalurgiDecisions ??= load());
 
 export function recordDecision(proposal: Proposal, result: GatewayResult, now = new Date()): DecisionRecord {
   const record: DecisionRecord = { id: log.next++, decided_at: now.toISOString(), proposal, result };
   log.records.push(record);
+  save();
   return record;
 }
 
@@ -39,6 +99,7 @@ export function listDecisions(): DecisionRecord[] {
 export function resetDecisions(): void {
   log.records = [];
   log.next = 1;
+  save();
 }
 
 export type OutcomeCounts = Record<Outcome, number>;
@@ -69,6 +130,7 @@ export function resolveDecision(id: number, status: Resolution["status"], by: st
 
   if (status === "rejected") {
     record.resolution = { status, by, at: now.toISOString() };
+    save();
     return { ok: true, record };
   }
 
@@ -85,5 +147,6 @@ export function resolveDecision(id: number, status: Resolution["status"], by: st
   if (!executed.ok) return { ok: false, error: executed.error };
   recordExecution(p.mandate_id, p.amount);
   record.resolution = { status, by, at: now.toISOString(), payment: executed.payment };
+  save();
   return { ok: true, record };
 }
