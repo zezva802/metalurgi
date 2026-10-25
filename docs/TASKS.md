@@ -77,6 +77,6 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
 
 ## Phase 4 · Sun 09:00–12:00 · Polish, then freeze at 12:00
 - [x] **E14 · README** — what it does; setup (`npm install`, `.env.local`, `npm run keys`, `npm run seed`, `npm run dev`, `npm test`, `npm run attacks`); architecture; third-party components + licenses; Guardrails section pointing to files; what's synthetic/mocked.
-- [ ] **S10 · Polish** — consistent outcome colours, big fonts for video, no console errors.
+- [x] **S10 · Polish** — consistent outcome colours, big fonts for video, no console errors.
 - [ ] **S11 · Deploy (optional)** — Vercel, scripted agent default.
 - [ ] **A9 · Final runs** — A–H three times each from a clean start; also with the LLM key removed.
