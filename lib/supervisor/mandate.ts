@@ -77,6 +77,7 @@ export function verifyCanonical(value: unknown, signature: string, publicKey: Pu
 
 export type MandateRule =
   | "signature"
+  | "revoked"
   | "expiry"
   | "mandate_id"
   | "agent_id"
@@ -95,6 +96,7 @@ export type MandateState = {
   principalPublicKey: PublicKeyInput; // the customer's key the mandate must be signed with
   uses: number; // executed payments under this mandate so far
   spent: number; // total executed so far, in mandate currency
+  revoked?: boolean; // the customer has cancelled this mandate
   now: Date;
 };
 
@@ -118,6 +120,10 @@ export function checkMandate(
 
   if (!verifyCanonical(mandate, signature, state.principalPublicKey)) {
     fail("signature", "Mandate signature is invalid: it was changed after signing or not signed by the customer");
+  }
+
+  if (state.revoked) {
+    fail("revoked", "Mandate has been revoked by the customer");
   }
 
   if (state.now.getTime() >= new Date(mandate.expires_at).getTime()) {

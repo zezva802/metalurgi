@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { generateKeys, signCanonical } from "@/lib/supervisor/mandate";
-import { resetStore, saveMandate } from "@/lib/store";
+import { resetStore, revokeMandate, saveMandate } from "@/lib/store";
 import { evaluatePayment } from "@/lib/gateway";
 import type { Proposal } from "@/lib/supervisor/proposal";
 import { BEFORE_EXPIRY, MANDATE, PROPOSAL_A } from "./fixtures";
@@ -53,5 +53,13 @@ describe("evaluatePayment", () => {
     const { decision } = evaluatePayment(PROPOSAL_A, signCanonical(PROPOSAL_A, wrong.privateKey), BEFORE_EXPIRY);
     expect(decision.outcome).toBe("BLOCK");
     expect(decision.reasons.some((r) => r.includes("signature is invalid"))).toBe(true);
+  });
+
+  it("scenario F: payment after revoke → BLOCK", () => {
+    expect(evaluatePayment(PROPOSAL_A, sign(PROPOSAL_A), BEFORE_EXPIRY).decision.outcome).toBe("EXECUTE");
+    revokeMandate("m_001");
+    const { decision } = evaluatePayment(PROPOSAL_A, sign(PROPOSAL_A), BEFORE_EXPIRY);
+    expect(decision.outcome).toBe("BLOCK");
+    expect(decision.reasons).toContain("Mandate has been revoked by the customer");
   });
 });

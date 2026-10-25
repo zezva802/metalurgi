@@ -1,6 +1,6 @@
 import { checkAgent, type AgentCheck } from "./agents";
 import { loadPublicKey } from "./keys";
-import { getMandate, getUsage } from "./store";
+import { getMandate, getUsage, isRevoked } from "./store";
 import { decide, type Decision } from "./supervisor/decide";
 import { checkMandate, type MandateCheck } from "./supervisor/mandate";
 import type { Proposal } from "./supervisor/proposal";
@@ -25,6 +25,7 @@ export function evaluatePayment(proposal: Proposal, signature: string, now = new
     ? checkMandate(stored.mandate, stored.signature, proposal, {
         principalPublicKey: loadPublicKey(stored.mandate.principal_id),
         ...getUsage(proposal.mandate_id),
+        revoked: isRevoked(proposal.mandate_id),
         now,
       })
     : { pass: false, failures: [{ rule: "mandate_id", message: `No mandate ${proposal.mandate_id} on file` }] };

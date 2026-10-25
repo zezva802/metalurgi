@@ -34,7 +34,7 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
 
 - [x] **E5 · Agent registry + agent signature** — `data/agents.json` (agent_id, operator, status; verifying key loaded from `data/keys/`). Gateway verifies agent exists, is active, proposal signature valid, mandate names this agent.
   Done when: unknown agent and wrong key both BLOCK (H).
-- [ ] **E6 · Revocation** — revoked set, `POST /api/mandates/[id]/revoke`, rule "not revoked", Revoke button in bank app.
+- [x] **E6 · Revocation** — revoked set, `POST /api/mandates/[id]/revoke`, rule "not revoked", Revoke button in bank app.
   Done when: payment after revoke → BLOCK (F).
 - [ ] **E7 · Uses + running total** — check and update in one function, only after execution.
   Done when: split-payment test passes (G).

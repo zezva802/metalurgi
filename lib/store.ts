@@ -51,3 +51,14 @@ export function listMandates(): StoredMandate[] {
 export function getUsage(id: string): Usage {
   return store.usage.get(id) ?? { uses: 0, spent: 0 };
 }
+
+// Revocation: the customer can cancel a mandate at any time. Revoked is permanent for the demo.
+export function revokeMandate(id: string): boolean {
+  if (!store.mandates.has(id)) return false;
+  store.revoked.add(id);
+  return true;
+}
+
+export function isRevoked(id: string): boolean {
+  return store.revoked.has(id);
+}

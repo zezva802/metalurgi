@@ -1,11 +1,12 @@
 import { connection } from "next/server";
 import { loadPrivateKey } from "@/lib/keys";
 import { createMandate, PRINCIPAL_ID } from "@/lib/mandates";
-import { listMandates } from "@/lib/store";
+import { isRevoked, listMandates } from "@/lib/store";
 
 export async function GET() {
   await connection(); // reads live in-memory state, never prerender
-  return Response.json({ mandates: listMandates() });
+  const mandates = listMandates().map((m) => ({ ...m, revoked: isRevoked(m.mandate.mandate_id) }));
+  return Response.json({ mandates });
 }
 
 export async function POST(request: Request) {
