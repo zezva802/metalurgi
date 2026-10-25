@@ -1,4 +1,5 @@
 import { ConsoleView } from "./console-view";
+import { PolicySliders } from "./policy-sliders";
 
 export default function Page() {
   return (
@@ -7,6 +8,7 @@ export default function Page() {
         <h1 className="text-4xl font-bold">Risk Officer Console</h1>
         <p className="text-xl text-slate-600">Every agent payment and the gateway&apos;s decision, newest first.</p>
       </div>
+      <PolicySliders />
       <ConsoleView />
     </div>
   );

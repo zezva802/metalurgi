@@ -70,7 +70,7 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
   Done when: entries survive a restart.
 - [x] **S8 · NBG report** (`/nbg`) — counts per outcome, attacks blocked by type, p95, number of agents; no personal data.
   Done when: page shows numbers, no names/amounts per person.
-- [ ] **S9 · Sliders, badge, errors** — console sliders edit policy in memory; badge on every page; LLM failure → message suggesting scripted agent.
+- [x] **S9 · Sliders, badge, errors** — console sliders edit policy in memory; badge on every page; LLM failure → message suggesting scripted agent.
   Done when: lowering the behavior threshold makes A ask for approval.
 - [ ] **A7 · Live agent log** — `/agent` shows tool calls as they happen.
 - [ ] **A8 · Batch run (stretch)** — 200 synthetic proposals with 20 bad ones → counts per outcome.
