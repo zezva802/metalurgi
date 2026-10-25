@@ -1,10 +1,13 @@
 import { checkAgent, type AgentCheck } from "./agents";
-import { authorizePayment, executePayment, type Payment } from "./bank";
+import { authorizePayment, executePayment, getTransactions, type Payment } from "./bank";
 import { loadPublicKey } from "./keys";
 import { getMandate, getUsage, isRevoked, recordExecution } from "./store";
+import { scoreBehavior } from "./supervisor/behavior";
+import { scoreContext } from "./supervisor/context";
 import { decide, type Decision } from "./supervisor/decide";
 import { checkMandate, type MandateCheck } from "./supervisor/mandate";
 import type { Proposal } from "./supervisor/proposal";
+import type { Score } from "./supervisor/signals";
 
 // The gateway: every payment proposal passes through here before anything can move money.
 // E5 agent verification · E6 revocation · E7 execution + usage update (same pass as the check) ·
@@ -16,6 +19,8 @@ export type GatewayResult = {
   decision: Decision;
   agent_check: AgentCheck;
   mandate_check: MandateCheck;
+  behavior: Score;
+  context: Score;
   payment?: Payment; // present only when the decision was EXECUTE and the bank moved money
 };
 
@@ -32,7 +37,12 @@ export function evaluatePayment(proposal: Proposal, signature: string, now = new
       })
     : { pass: false, failures: [{ rule: "mandate_id", message: `No mandate ${proposal.mandate_id} on file` }] };
 
-  const decision = decide({ mandate: mandateCheck, agent: agentCheck });
+  // Scores run against Nino's history (AIS) and the wider catalog. They only tighten the decision.
+  // Velocity (recent agent payments) is wired in a later task; 0 for now.
+  const behavior = scoreBehavior(proposal, getTransactions());
+  const context = scoreContext(proposal, { recentAgentPayments: 0 });
+
+  const decision = decide({ mandate: mandateCheck, agent: agentCheck, behavior, context });
 
   // Only an EXECUTE decision moves money, and only then do uses/spent change. VERIFY/ASK_HUMAN wait
   // for a human approval (S6); BLOCK does nothing.
@@ -59,6 +69,8 @@ export function evaluatePayment(proposal: Proposal, signature: string, now = new
     decision,
     agent_check: agentCheck,
     mandate_check: mandateCheck,
+    behavior,
+    context,
     payment,
   };
 }

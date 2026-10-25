@@ -42,7 +42,7 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
   Done when: A low; B's points mostly from "non-refundable".
 - [x] **E9 · Context risk** — `context.ts`, signals per CLAUDE.md.
   Done when: C high with 3 named signals; A low.
-- [ ] **E10 · Decision policy** — `data/policy.json` + `policy.ts`; reasons = failed rules or top 2–3 signals in plain words; test that scores never override a mandate BLOCK.
+- [x] **E10 · Decision policy** — `data/policy.json` + `policy.ts`; reasons = failed rules or top 2–3 signals in plain words; test that scores never override a mandate BLOCK.
   Done when: `tests/scenarios.test.ts` A–H all pass.
 - [ ] **S4 · Risk Officer Console** (`/console`) — counters (executed / verify / asked / blocked), table newest first (time, agent, merchant, amount, outcome badge, reason), refresh every 2 s, row → detail.
   Done when: new payments appear within 2 s.
