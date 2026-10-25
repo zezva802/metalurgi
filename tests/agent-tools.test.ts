@@ -52,8 +52,8 @@ describe("agent tools", () => {
 });
 
 describe("LLM fallbacks when no key is configured", () => {
-  it("hasLlm is false without ANTHROPIC_API_KEY", () => {
-    expect(hasLlm()).toBe(Boolean(process.env.ANTHROPIC_API_KEY));
+  it("hasLlm reflects whether GEMINI_API_KEY is set", () => {
+    expect(hasLlm()).toBe(Boolean(process.env.GEMINI_API_KEY));
   });
 
   it("runLlmAgent throws a helpful error without a key", async () => {

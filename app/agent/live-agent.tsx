@@ -1,7 +1,7 @@
 "use client";
 
 // A4 + A7: the live LLM agent. Pick a mandate, give it a request, and watch its tool calls stream in
-// one by one (A7), then the gateway's decision. Needs ANTHROPIC_API_KEY on the server; without it
+// one by one (A7), then the gateway's decision. Needs GEMINI_API_KEY on the server; without it
 // the stream's first (and only) event tells you to use the scripted agent above.
 
 import { useEffect, useState } from "react";

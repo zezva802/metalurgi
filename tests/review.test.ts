@@ -3,7 +3,7 @@ import ruleBook from "@/data/supervisor-rules.json";
 import { buildDossier } from "@/lib/review/dossier";
 import { reviewAgent } from "@/lib/review/review";
 
-// The review runs keyless here (no ANTHROPIC_API_KEY): every meaning call uses the deterministic
+// The review runs keyless here (no GEMINI_API_KEY): every meaning call uses the deterministic
 // heuristic, so these assertions are stable.
 const review = (agentId: string) => reviewAgent(buildDossier(agentId));
 

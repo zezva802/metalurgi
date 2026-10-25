@@ -1,57 +1,64 @@
-import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
+import { geminiClient, GEMINI_MODEL, hasLlm } from "../gemini";
 import type { GatewayResult } from "../gateway";
 import { compareOffers, proposePayment, searchHotels } from "./tools";
 
-// A4: the live LLM travel agent. It plans with three tools (search_hotels, compare_offers,
-// propose_payment) and we log every tool call so the run is fully visible. The LLM never decides
-// whether money moves — propose_payment just submits to the gateway, which makes the real decision.
-// Needs ANTHROPIC_API_KEY (.env.local). Without it we throw and the UI points at the scripted agent.
+// A4 + A7: the live LLM travel agent, running on Gemini (OpenAI-compatible endpoint). It plans with
+// three tools (search_hotels, compare_offers, propose_payment) and we log every tool call so the run
+// is fully visible. The LLM never decides whether money moves — propose_payment just submits to the
+// gateway, which makes the real decision. Needs GEMINI_API_KEY (.env.local); without it we throw and
+// the UI points at the scripted agent.
 
-const MODEL = process.env.ANTHROPIC_MODEL ?? "claude-opus-5-5";
-
-export function hasLlm(): boolean {
-  return Boolean(process.env.ANTHROPIC_API_KEY);
-}
+export { hasLlm };
 
 export type ToolCall = { tool: string; input: unknown; output: unknown };
 export type AgentRun = { request: string; log: ToolCall[]; result?: GatewayResult; message: string };
 
-const TOOLS: Anthropic.Tool[] = [
+const TOOLS: OpenAI.Chat.Completions.ChatCompletionTool[] = [
   {
-    name: "search_hotels",
-    description: "Find hotel offers in a city for given dates. Returns offers with merchant, price and refundability.",
-    input_schema: {
-      type: "object",
-      properties: {
-        city: { type: "string" },
-        from: { type: "string", description: "check-in YYYY-MM-DD" },
-        to: { type: "string", description: "check-out YYYY-MM-DD" },
-      },
-      required: ["city"],
-    },
-  },
-  {
-    name: "compare_offers",
-    description: "Compare offers against the market median for the same hotel. Use this to shop around before paying.",
-    input_schema: {
-      type: "object",
-      properties: {
-        offer_ids: { type: "array", items: { type: "string" } },
-        city: { type: "string" },
+    type: "function",
+    function: {
+      name: "search_hotels",
+      description: "Find hotel offers in a city for given dates. Returns offers with merchant, price and refundability.",
+      parameters: {
+        type: "object",
+        properties: {
+          city: { type: "string" },
+          from: { type: "string", description: "check-in YYYY-MM-DD" },
+          to: { type: "string", description: "check-out YYYY-MM-DD" },
+        },
+        required: ["city"],
       },
     },
   },
   {
-    name: "propose_payment",
-    description: "Submit a chosen offer to the bank gateway for a decision. options_compared is how many offers you looked at.",
-    input_schema: {
-      type: "object",
-      properties: {
-        mandate_id: { type: "string" },
-        offer_id: { type: "string" },
-        options_compared: { type: "integer" },
+    type: "function",
+    function: {
+      name: "compare_offers",
+      description: "Compare offers against the market median for the same hotel. Use this to shop around before paying.",
+      parameters: {
+        type: "object",
+        properties: {
+          offer_ids: { type: "array", items: { type: "string" } },
+          city: { type: "string" },
+        },
       },
-      required: ["mandate_id", "offer_id", "options_compared"],
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "propose_payment",
+      description: "Submit a chosen offer to the bank gateway for a decision. options_compared is how many offers you looked at.",
+      parameters: {
+        type: "object",
+        properties: {
+          mandate_id: { type: "string" },
+          offer_id: { type: "string" },
+          options_compared: { type: "integer" },
+        },
+        required: ["mandate_id", "offer_id", "options_compared"],
+      },
     },
   },
 ];
@@ -80,34 +87,43 @@ function runTool(name: string, input: Record<string, unknown>, mandateId: string
 
 export async function runLlmAgent(request: string, mandateId: string, onToolCall?: (call: ToolCall) => void): Promise<AgentRun> {
   if (!hasLlm()) {
-    throw new Error("The live LLM agent needs ANTHROPIC_API_KEY in .env.local. Use the scripted agent instead.");
+    throw new Error("The live LLM agent needs GEMINI_API_KEY in .env.local. Use the scripted agent instead.");
   }
 
-  const client = new Anthropic();
-  const messages: Anthropic.MessageParam[] = [{ role: "user", content: `${request}\n\nUse mandate ${mandateId}.` }];
+  const client = geminiClient();
+  const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
+    { role: "system", content: SYSTEM },
+    { role: "user", content: `${request}\n\nUse mandate ${mandateId}.` },
+  ];
   const log: ToolCall[] = [];
   let result: GatewayResult | undefined;
 
   for (let step = 0; step < 8; step++) {
-    const response = await client.messages.create({ model: MODEL, max_tokens: 2048, system: SYSTEM, tools: TOOLS, messages });
-    messages.push({ role: "assistant", content: response.content });
+    const response = await client.chat.completions.create({ model: GEMINI_MODEL, messages, tools: TOOLS, tool_choice: "auto" });
+    const message = response.choices[0]?.message;
+    if (!message) break;
+    messages.push(message);
 
-    const toolUses = response.content.filter((b): b is Anthropic.ToolUseBlock => b.type === "tool_use");
-    if (toolUses.length === 0) {
-      const text = response.content.filter((b): b is Anthropic.TextBlock => b.type === "text").map((b) => b.text).join(" ");
-      return { request, log, result, message: text || "Agent finished without a proposal." };
+    const calls = message.tool_calls ?? [];
+    if (calls.length === 0) {
+      return { request, log, result, message: message.content ?? "Agent finished without a proposal." };
     }
 
-    const toolResults: Anthropic.ToolResultBlockParam[] = [];
-    for (const call of toolUses) {
-      const ran = runTool(call.name, call.input as Record<string, unknown>, mandateId);
-      const entry: ToolCall = { tool: call.name, input: call.input, output: ran.output };
+    for (const call of calls) {
+      if (call.type !== "function") continue;
+      let args: Record<string, unknown> = {};
+      try {
+        args = JSON.parse(call.function.arguments || "{}");
+      } catch {
+        args = {};
+      }
+      const ran = runTool(call.function.name, args, mandateId);
+      const entry: ToolCall = { tool: call.function.name, input: args, output: ran.output };
       log.push(entry);
       onToolCall?.(entry); // A7: stream each tool call to the UI as it happens
       if (ran.result) result = ran.result;
-      toolResults.push({ type: "tool_result", tool_use_id: call.id, content: JSON.stringify(ran.output), is_error: ran.isError });
+      messages.push({ role: "tool", tool_call_id: call.id, content: JSON.stringify(ran.output) });
     }
-    messages.push({ role: "user", content: toolResults });
 
     if (result) {
       return { request, log, result, message: `Gateway decision: ${result.decision.outcome}` };

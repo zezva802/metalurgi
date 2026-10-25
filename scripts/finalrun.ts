@@ -9,7 +9,7 @@ import { draftMandate } from "../lib/agent/draft";
 import { hasLlm, runLlmAgent } from "../lib/agent/llm";
 
 // A9 explicitly covers "with the LLM key removed" — force that regardless of the environment.
-delete process.env.ANTHROPIC_API_KEY;
+delete process.env.GEMINI_API_KEY;
 
 const IDS = Object.keys(SCENARIOS) as ScenarioId[];
 
