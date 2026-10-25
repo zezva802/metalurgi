@@ -32,7 +32,7 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
 ## Phase 2 · Sat 09:00–19:00 · Real engine + bank screens
 **Checkpoint (Sat 19:00):** scenario A end to end: agent proposes → EXECUTE → mock bank pays → row in console.
 
-- [ ] **E5 · Agent registry + agent signature** — `data/agents.json` (agent_id, operator, public_key, status). Gateway verifies agent exists, is active, proposal signature valid, mandate names this agent.
+- [x] **E5 · Agent registry + agent signature** — `data/agents.json` (agent_id, operator, status; verifying key loaded from `data/keys/`). Gateway verifies agent exists, is active, proposal signature valid, mandate names this agent.
   Done when: unknown agent and wrong key both BLOCK (H).
 - [ ] **E6 · Revocation** — revoked set, `POST /api/mandates/[id]/revoke`, rule "not revoked", Revoke button in bank app.
   Done when: payment after revoke → BLOCK (F).

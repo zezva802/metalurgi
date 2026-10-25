@@ -63,7 +63,8 @@ export function TestPaymentForm() {
 
     setResult({ kind: "sending" });
     try {
-      const res = await fetch("/api/payments", {
+      // The server signs as the agent (the browser can't hold an agent key), then runs the gateway.
+      const res = await fetch("/api/agent/test-send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(proposal),

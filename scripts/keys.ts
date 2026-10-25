@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { generateKeys } from "../lib/supervisor/mandate";
 
 const KEY_DIR = join(process.cwd(), "data", "keys");
-const IDS = ["nino", "agent_travel_01"];
+const IDS = ["nino", "agent_travel_01", "agent_legacy_01"];
 const force = process.argv.includes("--force");
 
 mkdirSync(KEY_DIR, { recursive: true });
