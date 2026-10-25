@@ -15,6 +15,29 @@ export function MandateForm({ template }: { template: object }) {
   const [request, setRequest] = useState(DEFAULT_REQUEST);
   const [json, setJson] = useState(() => JSON.stringify(template, null, 2));
   const [status, setStatus] = useState<Status>({ kind: "idle" });
+  const [drafting, setDrafting] = useState(false);
+  const [draftNote, setDraftNote] = useState<string | null>(null);
+
+  // A5: turn the plain-language request into mandate JSON (falls back to the template).
+  async function draftWithAi() {
+    setDrafting(true);
+    setDraftNote(null);
+    try {
+      const res = await fetch("/api/mandates/draft", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ request }),
+      });
+      const data: { draft: object; source: "llm" | "template"; note?: string } = await res.json();
+      setJson(JSON.stringify(data.draft, null, 2));
+      setStatus({ kind: "idle" });
+      setDraftNote(data.note ?? (data.source === "llm" ? "Drafted with AI — review before signing." : null));
+    } catch {
+      setDraftNote("Could not reach the drafting service.");
+    } finally {
+      setDrafting(false);
+    }
+  }
 
   async function sign() {
     let draft: unknown;
@@ -52,7 +75,14 @@ export function MandateForm({ template }: { template: object }) {
           rows={4}
           className="w-full rounded-lg border border-slate-300 bg-white p-4 text-lg"
         />
-        <p className="text-slate-500">AI drafting of the mandate from this request comes in A5. For now, edit the JSON.</p>
+        <button
+          onClick={draftWithAi}
+          disabled={drafting}
+          className="rounded-lg border border-slate-400 px-5 py-2 text-lg font-medium hover:bg-slate-100 disabled:opacity-50"
+        >
+          {drafting ? "Drafting…" : "Draft with AI"}
+        </button>
+        {draftNote && <p className="text-slate-500">{draftNote}</p>}
       </section>
 
       <section className="space-y-3">

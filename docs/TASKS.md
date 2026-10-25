@@ -50,10 +50,10 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
   Done when: scenario C shows its 3 context bars.
 - [x] **S6 · Approval in bank app** — pending ASK_HUMAN/VERIFY list with Approve/Reject; approve → mock bank + log approver.
   Done when: B can be approved and the console row updates.
-- [ ] **A4 · LLM agent** — `lib/agent/`, tools `search_hotels`, `compare_offers`, `propose_payment`; run log of every tool call; proposal signed with agent key → `/api/payments`.
-  Done when: "Book Nino's Paris hotel" reaches the gateway with a visible run log.
-- [ ] **A5 · Mandate drafting** — LLM turns the request into mandate JSON, zod-validated, editable before signing; template on failure.
-  Done when: the Paris request fills a valid mandate.
+- [x] **A4 · LLM agent** — `lib/agent/`, tools `search_hotels`, `compare_offers`, `propose_payment`; run log of every tool call; proposal signed with agent key → the gateway.
+  Done when: "Book Nino's Paris hotel" reaches the gateway with a visible run log. (Live path needs ANTHROPIC_API_KEY; tools + gateway path unit-tested, keyless fallback points at the scripted agent.)
+- [x] **A5 · Mandate drafting** — LLM turns the request into mandate JSON, zod-validated, editable before signing; template on failure.
+  Done when: the Paris request fills a valid mandate. (Falls back to the template without a key.)
 - [x] **A6 · Scripted agent** — buttons A–H on `/agent` replaying fixed proposals through the same API.
   Done when: every button gives its expected outcome.
 
