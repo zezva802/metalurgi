@@ -9,6 +9,9 @@ import type { Outcome } from "@/lib/supervisor/decide";
 // S8: the regulator's view (NBG). Aggregates only — counts, rates, latency, agent and attack
 // coverage. No names, no per-person amounts, nothing that identifies a customer.
 
+// Reads live in-memory + persisted state, so this route is dynamic, not prerendered.
+export const instant = false;
+
 const OUTCOMES: Outcome[] = ["EXECUTE", "VERIFY", "ASK_HUMAN", "BLOCK"];
 
 function Stat({ label, value, sub }: { label: string; value: string; sub?: string }) {
