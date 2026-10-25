@@ -76,7 +76,7 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
 - [x] **A8 · Batch run (stretch)** — 200 synthetic proposals with 20 bad ones → counts per outcome. (`npm run batch` / button: 150 EXECUTE, 15 VERIFY, 15 ASK_HUMAN, 20 BLOCK.)
 
 ## Phase 4 · Sun 09:00–12:00 · Polish, then freeze at 12:00
-- [ ] **E14 · README** — what it does; setup (`npm install`, `.env.local`, `npm run keys`, `npm run seed`, `npm run dev`, `npm test`, `npm run attacks`); architecture; third-party components + licenses; Guardrails section pointing to files; what's synthetic/mocked.
-- [ ] **S10 · Polish** — consistent outcome colours, big fonts for video, no console errors.
+- [x] **E14 · README** — what it does; setup (`npm install`, `.env.local`, `npm run keys`, `npm run seed`, `npm run dev`, `npm test`, `npm run attacks`); architecture; third-party components + licenses; Guardrails section pointing to files; what's synthetic/mocked.
+- [x] **S10 · Polish** — consistent outcome colours, big fonts for video, no console errors.
 - [ ] **S11 · Deploy (optional)** — Vercel, scripted agent default.
-- [ ] **A9 · Final runs** — A–H three times each from a clean start; also with the LLM key removed.
+- [x] **A9 · Final runs** — A–H three times each from a clean start; also with the LLM key removed. (`npm run finalrun`: A–H correct in all 3 clean-start passes; key-removed fallbacks OK.)

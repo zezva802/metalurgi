@@ -31,11 +31,38 @@ type Log = { records: DecisionRecord[]; next: number };
 const PERSIST = process.env.NEXT_RUNTIME === "nodejs";
 const FILE = join(process.cwd(), "data", "audit.json");
 
+// Rows persisted by an older build may be missing fields added later (latency_ms, mandate_hash, the
+// score blocks). Fill safe defaults on load so no consumer has to guard against schema drift.
+type RawRecord = { id: number; decided_at: string; proposal: Proposal; resolution?: Resolution; result?: Partial<GatewayResult> };
+
+function normalize(raw: RawRecord): DecisionRecord {
+  const r = raw.result ?? {};
+  return {
+    id: raw.id,
+    decided_at: raw.decided_at,
+    proposal: raw.proposal,
+    ...(raw.resolution ? { resolution: raw.resolution } : {}),
+    result: {
+      proposal_id: r.proposal_id ?? raw.proposal.proposal_id,
+      mandate_id: r.mandate_id ?? raw.proposal.mandate_id,
+      decision: r.decision ?? { outcome: "BLOCK", reasons: [] },
+      agent_check: r.agent_check ?? { pass: true, failures: [] },
+      mandate_check: r.mandate_check ?? { pass: true, failures: [] },
+      behavior: r.behavior ?? { total: 0, signals: [] },
+      context: r.context ?? { total: 0, signals: [] },
+      mandate_hash: r.mandate_hash ?? null,
+      latency_ms: r.latency_ms ?? 0,
+      ...(r.payment ? { payment: r.payment } : {}),
+    },
+  };
+}
+
 function load(): Log {
   if (PERSIST) {
     try {
       if (existsSync(FILE)) {
-        const records: DecisionRecord[] = JSON.parse(readFileSync(FILE, "utf8"));
+        const raw: RawRecord[] = JSON.parse(readFileSync(FILE, "utf8"));
+        const records = raw.map(normalize);
         return { records, next: records.reduce((max, r) => Math.max(max, r.id), 0) + 1 };
       }
     } catch {
