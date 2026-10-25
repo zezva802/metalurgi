@@ -22,10 +22,12 @@ export type GatewayResult = {
   mandate_check: MandateCheck;
   behavior: Score;
   context: Score;
+  latency_ms: number; // how long the gateway took to decide (E12)
   payment?: Payment; // present only when the decision was EXECUTE and the bank moved money
 };
 
 export function evaluatePayment(proposal: Proposal, signature: string, now = new Date()): GatewayResult {
+  const start = performance.now();
   const agentCheck = checkAgent(proposal, signature);
 
   const stored = getMandate(proposal.mandate_id);
@@ -72,6 +74,7 @@ export function evaluatePayment(proposal: Proposal, signature: string, now = new
     mandate_check: mandateCheck,
     behavior,
     context,
+    latency_ms: performance.now() - start,
     payment,
   };
 

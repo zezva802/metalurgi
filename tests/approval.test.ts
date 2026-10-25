@@ -16,6 +16,7 @@ function pending(outcome: Outcome, proposal = { ...PROPOSAL_A, proposal_id: "p_p
     mandate_check: { pass: true, failures: [] },
     behavior: { total: 0, signals: [] },
     context: { total: 60, signals: [] },
+    latency_ms: 0,
   };
   return recordDecision(proposal, result);
 }

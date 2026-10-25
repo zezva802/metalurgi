@@ -62,7 +62,7 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
 
 - [x] **E11 · Attack suite** — `tests/attacks.test.ts` + `npm run attacks`: forged signature, altered mandate, revoked, reused single-use, split over budget, expired, unknown agent, wrong agent key.
   Done when: prints 0 of N executed.
-- [ ] **E12 · Latency** — time each decision (`performance.now()`), store in audit; script runs 200 decisions and prints p95.
+- [x] **E12 · Latency** — time each decision (`performance.now()`), store in audit; script runs 200 decisions and prints p95.
   Done when: one real p95 number.
 - [ ] **E13 · Tune thresholds** — adjust policy/signal points until A–H pass; document final values in README.
   Done when: scenario tests green 3 runs in a row.
