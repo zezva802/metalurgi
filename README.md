@@ -31,6 +31,33 @@ npm test         # unit tests (Vitest)
    Result: **BLOCK**, "Exceeds the €800 limit (€950 requested)".
 3. Change the amount to 540 → **EXECUTE**, "All mandate rules passed".
 
+## Decision policy (tuned values, E13)
+
+The decision runs the **hard gates first** — agent verification and the mandate rules. Any hard
+failure is an absolute **BLOCK**; the behavior and context scores can only *tighten* the outcome,
+never rescue a hard failure. If the hard gates pass, the scores map to an outcome by these
+thresholds (`data/policy.json`, editable live by the console sliders in S9):
+
+| Condition | Outcome |
+|---|---|
+| context score ≥ **90** | BLOCK |
+| behavior score ≥ **40** | ASK_HUMAN |
+| context score ≥ **50** | VERIFY |
+| otherwise | EXECUTE |
+
+`contextBlock` is **90** (not the draft 85) so scenario C's context score of 85 lands on VERIFY, as
+the scenario table requires. ASK_HUMAN is checked before VERIFY so the more restrictive outcome wins.
+
+**Behavior signals** (`lib/supervisor/behavior.ts`, vs Nino's own history): price/night outside her
+10–90th percentile (≤30), a merchant she has never used (25), non-refundable when she is almost
+always refundable (30), an unusual booking hour (15).
+
+**Context signals** (`lib/supervisor/context.ts`): a merchant < 30 days old (35) **or** not in the
+registry at all (15, mutually exclusive), > 30% below the same hotel's market median (30), fewer
+than 2 options compared (20), > 3 agent payments in an hour (15).
+
+All eight demo scenarios (A–H) pass against these values; see `tests/scenarios.test.ts`.
+
 ## Status
 
 | Phase | State |

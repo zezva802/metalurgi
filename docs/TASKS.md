@@ -64,7 +64,7 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
   Done when: prints 0 of N executed.
 - [x] **E12 · Latency** — time each decision (`performance.now()`), store in audit; script runs 200 decisions and prints p95.
   Done when: one real p95 number.
-- [ ] **E13 · Tune thresholds** — adjust policy/signal points until A–H pass; document final values in README.
+- [x] **E13 · Tune thresholds** — adjust policy/signal points until A–H pass; document final values in README.
   Done when: scenario tests green 3 runs in a row.
 - [ ] **S7 · Audit log** (`/audit`) — time, mandate_id, mandate hash (SHA-256 of canonical JSON), agent, amount, scores, outcome, reasons, approver, latency; persisted; filter by outcome.
   Done when: entries survive a restart.
