@@ -38,7 +38,7 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
   Done when: payment after revoke → BLOCK (F).
 - [x] **E7 · Uses + running total** — check and update in one function, only after execution.
   Done when: split-payment test passes (G).
-- [ ] **E8 · Behavior envelope + score** — `behavior.ts`, signals per CLAUDE.md, returns `{ total, signals }`.
+- [x] **E8 · Behavior envelope + score** — `behavior.ts`, signals per CLAUDE.md, returns `{ total, signals }`.
   Done when: A low; B's points mostly from "non-refundable".
 - [ ] **E9 · Context risk** — `context.ts`, signals per CLAUDE.md.
   Done when: C high with 3 named signals; A low.
