@@ -45,4 +45,16 @@ describe("toAuditEntry", () => {
     const unresolved: DecisionRecord = { ...record, resolution: undefined };
     expect(toAuditEntry(unresolved).approver).toBeNull();
   });
+
+  it("tolerates an older row missing latency_ms / mandate_hash", () => {
+    // A record persisted before those fields existed (e.g. ids 1–11 in a long-lived audit file).
+    const legacy = {
+      ...record,
+      result: { ...record.result, latency_ms: undefined, mandate_hash: undefined },
+    } as unknown as DecisionRecord;
+    const entry = toAuditEntry(legacy);
+    expect(entry.latency_ms).toBe(0);
+    expect(entry.mandate_hash).toBeNull();
+    expect(() => entry.latency_ms.toFixed(1)).not.toThrow();
+  });
 });
