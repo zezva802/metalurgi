@@ -24,6 +24,20 @@ const BASE: Omit<Mandate, "mandate_id"> = {
   expires_at: "2026-12-31T23:59:00Z",
 };
 
+// The attack classes the gateway defends against. The suite (tests/attacks.test.ts, npm run attacks)
+// proves none of them execute; the NBG page lists them without running the suite (which would reset
+// the live store/audit). runAttacks() produces results in exactly this order — asserted in the test.
+export const ATTACK_TYPES = [
+  "forged mandate signature",
+  "altered mandate amount",
+  "payment after revocation",
+  "reuse of single-use mandate",
+  "split payments over budget",
+  "expired mandate",
+  "unknown agent",
+  "wrong agent key",
+] as const;
+
 export type AttackResult = { name: string; outcome: Outcome; reasons: string[]; executed: boolean };
 
 function makeRunner(now: Date) {

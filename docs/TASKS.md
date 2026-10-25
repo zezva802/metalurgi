@@ -68,7 +68,7 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
   Done when: scenario tests green 3 runs in a row.
 - [x] **S7 · Audit log** (`/audit`) — time, mandate_id, mandate hash (SHA-256 of canonical JSON), agent, amount, scores, outcome, reasons, approver, latency; persisted; filter by outcome.
   Done when: entries survive a restart.
-- [ ] **S8 · NBG report** (`/nbg`) — counts per outcome, attacks blocked by type, p95, number of agents; no personal data.
+- [x] **S8 · NBG report** (`/nbg`) — counts per outcome, attacks blocked by type, p95, number of agents; no personal data.
   Done when: page shows numbers, no names/amounts per person.
 - [ ] **S9 · Sliders, badge, errors** — console sliders edit policy in memory; badge on every page; LLM failure → message suggesting scripted agent.
   Done when: lowering the behavior threshold makes A ask for approval.
