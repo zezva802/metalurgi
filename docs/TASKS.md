@@ -54,7 +54,7 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
   Done when: "Book Nino's Paris hotel" reaches the gateway with a visible run log.
 - [ ] **A5 · Mandate drafting** — LLM turns the request into mandate JSON, zod-validated, editable before signing; template on failure.
   Done when: the Paris request fills a valid mandate.
-- [ ] **A6 · Scripted agent** — buttons A–H on `/agent` replaying fixed proposals through the same API.
+- [x] **A6 · Scripted agent** — buttons A–H on `/agent` replaying fixed proposals through the same API.
   Done when: every button gives its expected outcome.
 
 ## Phase 3 · Sat 19:00–01:00 · Proof and evidence
