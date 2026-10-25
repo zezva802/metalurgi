@@ -1,4 +1,5 @@
 import { MANDATE_TEMPLATE } from "@/lib/mandates";
+import { Approvals } from "./approvals";
 import { MandateForm } from "./mandate-form";
 import { MandateList } from "./mandate-list";
 
@@ -10,6 +11,7 @@ export default function Page() {
         <p className="text-xl text-slate-600">Nino gives her travel agent a narrow, signed permission.</p>
       </div>
       <MandateForm template={MANDATE_TEMPLATE} />
+      <Approvals />
       <MandateList />
     </div>
   );

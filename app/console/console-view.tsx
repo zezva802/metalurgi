@@ -99,7 +99,15 @@ export function ConsoleView() {
                       <td className="p-3">
                         <OutcomeBadge outcome={d.result.decision.outcome} />
                       </td>
-                      <td className="p-3 text-base text-slate-600">{d.result.decision.reasons[0]}</td>
+                      <td className="p-3 text-base text-slate-600">
+                        {d.resolution ? (
+                          <span className={d.resolution.status === "approved" ? "font-semibold text-green-700" : "font-semibold text-red-700"}>
+                            {d.resolution.status === "approved" ? "✓" : "✗"} {d.resolution.status} by {d.resolution.by}
+                          </span>
+                        ) : (
+                          d.result.decision.reasons[0]
+                        )}
+                      </td>
                     </tr>
                   );
                 })

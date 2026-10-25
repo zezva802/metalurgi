@@ -48,7 +48,7 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
   Done when: new payments appear within 2 s.
 - [x] **S5 · Decision detail** — 4 cards (Mandate rules pass/fail, Behavior bars, Context bars, Decision + reasons).
   Done when: scenario C shows its 3 context bars.
-- [ ] **S6 · Approval in bank app** — pending ASK_HUMAN/VERIFY list with Approve/Reject; approve → mock bank + log approver.
+- [x] **S6 · Approval in bank app** — pending ASK_HUMAN/VERIFY list with Approve/Reject; approve → mock bank + log approver.
   Done when: B can be approved and the console row updates.
 - [ ] **A4 · LLM agent** — `lib/agent/`, tools `search_hotels`, `compare_offers`, `propose_payment`; run log of every tool call; proposal signed with agent key → `/api/payments`.
   Done when: "Book Nino's Paris hotel" reaches the gateway with a visible run log.
