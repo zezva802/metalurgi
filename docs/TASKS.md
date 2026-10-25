@@ -40,7 +40,7 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
   Done when: split-payment test passes (G).
 - [x] **E8 · Behavior envelope + score** — `behavior.ts`, signals per CLAUDE.md, returns `{ total, signals }`.
   Done when: A low; B's points mostly from "non-refundable".
-- [ ] **E9 · Context risk** — `context.ts`, signals per CLAUDE.md.
+- [x] **E9 · Context risk** — `context.ts`, signals per CLAUDE.md.
   Done when: C high with 3 named signals; A low.
 - [ ] **E10 · Decision policy** — `data/policy.json` + `policy.ts`; reasons = failed rules or top 2–3 signals in plain words; test that scores never override a mandate BLOCK.
   Done when: `tests/scenarios.test.ts` A–H all pass.
