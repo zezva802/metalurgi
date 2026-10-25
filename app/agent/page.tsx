@@ -1,3 +1,4 @@
+import { BatchRun } from "./batch-run";
 import { LiveAgent } from "./live-agent";
 import { ScriptedAgent } from "./scripted-agent";
 import { TestPaymentForm } from "./test-payment-form";
@@ -11,6 +12,7 @@ export default function Page() {
       </div>
       <ScriptedAgent />
       <LiveAgent />
+      <BatchRun />
       <TestPaymentForm />
     </div>
   );

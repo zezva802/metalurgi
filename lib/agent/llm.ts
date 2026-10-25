@@ -78,7 +78,7 @@ function runTool(name: string, input: Record<string, unknown>, mandateId: string
   }
 }
 
-export async function runLlmAgent(request: string, mandateId: string): Promise<AgentRun> {
+export async function runLlmAgent(request: string, mandateId: string, onToolCall?: (call: ToolCall) => void): Promise<AgentRun> {
   if (!hasLlm()) {
     throw new Error("The live LLM agent needs ANTHROPIC_API_KEY in .env.local. Use the scripted agent instead.");
   }
@@ -101,7 +101,9 @@ export async function runLlmAgent(request: string, mandateId: string): Promise<A
     const toolResults: Anthropic.ToolResultBlockParam[] = [];
     for (const call of toolUses) {
       const ran = runTool(call.name, call.input as Record<string, unknown>, mandateId);
-      log.push({ tool: call.name, input: call.input, output: ran.output });
+      const entry: ToolCall = { tool: call.name, input: call.input, output: ran.output };
+      log.push(entry);
+      onToolCall?.(entry); // A7: stream each tool call to the UI as it happens
       if (ran.result) result = ran.result;
       toolResults.push({ type: "tool_result", tool_use_id: call.id, content: JSON.stringify(ran.output), is_error: ran.isError });
     }

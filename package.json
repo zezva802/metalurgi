@@ -12,7 +12,8 @@
     "keys": "tsx scripts/keys.ts",
     "seed": "tsx data/seed.ts",
     "attacks": "tsx scripts/attacks.ts",
-    "latency": "tsx scripts/latency.ts"
+    "latency": "tsx scripts/latency.ts",
+    "batch": "tsx scripts/batch.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.3.0",

@@ -72,8 +72,8 @@ The full board (including pitch/video tasks) is the "Build tasks" tab in the tea
   Done when: page shows numbers, no names/amounts per person.
 - [x] **S9 · Sliders, badge, errors** — console sliders edit policy in memory; badge on every page; LLM failure → message suggesting scripted agent.
   Done when: lowering the behavior threshold makes A ask for approval.
-- [ ] **A7 · Live agent log** — `/agent` shows tool calls as they happen.
-- [ ] **A8 · Batch run (stretch)** — 200 synthetic proposals with 20 bad ones → counts per outcome.
+- [x] **A7 · Live agent log** — `/agent` shows tool calls as they happen. (Streamed as NDJSON; live tool-call stream needs ANTHROPIC_API_KEY, keyless path streams the scripted-agent message.)
+- [x] **A8 · Batch run (stretch)** — 200 synthetic proposals with 20 bad ones → counts per outcome. (`npm run batch` / button: 150 EXECUTE, 15 VERIFY, 15 ASK_HUMAN, 20 BLOCK.)
 
 ## Phase 4 · Sun 09:00–12:00 · Polish, then freeze at 12:00
 - [ ] **E14 · README** — what it does; setup (`npm install`, `.env.local`, `npm run keys`, `npm run seed`, `npm run dev`, `npm test`, `npm run attacks`); architecture; third-party components + licenses; Guardrails section pointing to files; what's synthetic/mocked.
